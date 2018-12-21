@@ -43,13 +43,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public double encoderToInches = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION)/(WHEEL_DIAMETER_INCHES * Math.PI); //Multiply desired distance (inches)
 
     //Camera
-    private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
-    private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
-    private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+    public static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
+    public static final String LABEL_GOLD_MINERAL = "Gold Mineral";
+    public static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
-    private static final String VUFORIA_KEY = "AQt2xVL/////AAABmXIVKUnTcEJbqvVBjp/Sw/9SqarohYyKotzRjT/Xl1/S8KDwsFHv/zYw6rXqXTjKrnjk92GfBA4hbZaQP17d1N6BiBuXO2W/hFNoMGxiF+fWlnvtDmUM1H/MF9faMOjZcPNjnQ7X8DVwdDDha3A3aqaoegefkKxb4A5EjP8Xcb0EPJ1JA4RwhUOutLbCDJNKUq6nCi+cvPqShvlYTvXoROcOGWSIrPxMEiOHemCyuny7tJHUyEg2FTd2upiQygKAeD+LN3P3cT02aK6AJbQ0DlQccxAtoo1+b//H6/eGro2s0fjxA2dH3AaoHB7qkb2K0Vl7ReFEwX7wmqJleamNUG+OZu7K3Zm68mPudzNuhAWQ";
-    private VuforiaLocalizer vuforia;
-    private TFObjectDetector tfod;
+    public static final String VUFORIA_KEY = "AQt2xVL/////AAABmXIVKUnTcEJbqvVBjp/Sw/9SqarohYyKotzRjT/Xl1/S8KDwsFHv/zYw6rXqXTjKrnjk92GfBA4hbZaQP17d1N6BiBuXO2W/hFNoMGxiF+fWlnvtDmUM1H/MF9faMOjZcPNjnQ7X8DVwdDDha3A3aqaoegefkKxb4A5EjP8Xcb0EPJ1JA4RwhUOutLbCDJNKUq6nCi+cvPqShvlYTvXoROcOGWSIrPxMEiOHemCyuny7tJHUyEg2FTd2upiQygKAeD+LN3P3cT02aK6AJbQ0DlQccxAtoo1+b//H6/eGro2s0fjxA2dH3AaoHB7qkb2K0Vl7ReFEwX7wmqJleamNUG+OZu7K3Zm68mPudzNuhAWQ";
+    public VuforiaLocalizer vuforia;
+    public TFObjectDetector tfod;
 
     // INITIALIZE
     public double init(HardwareMap map, boolean auto){
@@ -81,13 +81,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
         if (auto) {
             angles = new Orientation();
 
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.mode = BNO055IMU.SensorMode.IMU;
-            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-            parameters.loggingEnabled = false;
+            BNO055IMU.Parameters bparameters = new BNO055IMU.Parameters();
+            bparameters.mode = BNO055IMU.SensorMode.IMU;
+            bparameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+            bparameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+            bparameters.loggingEnabled = false;
 
-            imu.initialize(parameters);
+            imu.initialize(bparameters);
 
             telemetry.addData("Mode", "calibrating...");
             telemetry.update();
@@ -98,14 +98,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
             }
 
             telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
-            telemetry.update();
-
-            // Set up detector
-
-            telemetry.addData("Mode", "setting up detector...");
-            telemetry.update();
-
-            telemetry.addData("detector", "enabled");
             telemetry.update();
         }
         telemetry.addData("Status: ", "Initialized");
@@ -119,6 +111,21 @@ public class MecanumLinearOpMode extends LinearOpMode{
         RF.setPower(Range.clip(rightPower, -1, 1));
         LB.setPower(Range.clip(leftPower, -1, 1));
         RB.setPower(Range.clip(rightPower, -1, 1));
+    }
+
+    public void setStrafePowers(double power, boolean right){
+        if (right){
+            LF.setPower(-Range.clip(power, -1, 1));
+            RF.setPower(Range.clip(power, -1, 1));
+            LB.setPower(Range.clip(power, -1, 1));
+            RB.setPower(-Range.clip(power, -1, 1));
+        }else{
+            LF.setPower(Range.clip(power, -1, 1));
+            RF.setPower(-Range.clip(power, -1, 1));
+            LB.setPower(-Range.clip(power, -1, 1));
+            RB.setPower(Range.clip(power, -1, 1));
+        }
+
     }
 
     // TIME BASED MOVEMENT
@@ -292,52 +299,55 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     //GOLD SAMPLING
 
-    public int findGold(int timeLimit){
+    int pos = 2;
+
+    public void findGold(int timeLimit){
 
         runtime.reset();
-
-        int pos = 2;
-
-        while (runtime.seconds() < timeLimit){
-            if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
-                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
-                if (updatedRecognitions != null) { //IF LIST IS NOT NULL
+        activateDetector();
+        while (runtime.seconds() < timeLimit && opModeIsActive()){
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
+            if (updatedRecognitions != null) { //IF LIST IS NOT NULL
+                telemetry.addData("# of Objects Detected", updatedRecognitions.size()); //GET # OF OBJECTS DETECTED
+                if (updatedRecognitions.size() > 0) { //IF DETECT BOTH OBJECTS
                     int goldMineralX = -1;
-                    telemetry.addData("# of Objects Detected", updatedRecognitions.size()); //GET # OF OBJECTS DETECTED
-                    if (updatedRecognitions.size() > 0) { //IF DETECT ALL THREE OBJECTS
-                        for (Recognition recognition : updatedRecognitions) {
-                            if (recognition.getLabel().equals(LABEL_GOLD_MINERAL) && recognition.getTop() < 500) {
-                            //IF OBJECT DETECTED IS GOLD AND ALSO RESTRICT HEIGHT TO AVOID CRATER GOLD CONFUSION
-                                goldMineralX = (int) recognition.getLeft(); //GET X POSITION FROM LEFT (?)
-                            }
-                            telemetry.addData("Gold Mineral Position", goldMineralX);
+                    int silverMineral1X = -1;
+                    int silverMineral2X = -1;
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) { //IF OBJECT DETECTED IS GOLD
+                            goldMineralX = (int) recognition.getLeft();
+                        } else if (silverMineral1X == -1) {
+                            silverMineral1X = (int) recognition.getLeft();
+                        } else {
+                            silverMineral2X = (int) recognition.getLeft();
                         }
                     }
-
-                    if (goldMineralX < 300){
-                        pos = 1;
-                    }else if (goldMineralX > 300){
-                        pos = 2;
+                    if (goldMineralX != -1) {
+                        if (goldMineralX < silverMineral1X) {
+                            telemetry.addData("Gold Mineral Position", "Left");
+                            pos = 1;
+                        } else{
+                            telemetry.addData("Gold Mineral Position", "Center");
+                            pos = 2;
+                        }
                     }else{
+                        telemetry.addData("Gold Mineral Position", "Right");
                         pos = 3;
                     }
-                }else{
-                    telemetry.addData("Nothing", "Detected");
+                    telemetry.addData("Gold x pos ", goldMineralX);
                 }
-            }else{
-                telemetry.addData("No", "TFOD");
+                telemetry.addData("Runtime", getTime());
+                telemetry.update();
             }
-            telemetry.update();
         }
-        return pos;
+        telemetry.addData("Done with find gold", " ");
+        sleep(1000);
+        disableDetector();
     }
 
-
-    /*public double getXpos(){
-        return detector.getXPosition();
-    }*/
+    public int retPos(){
+        return pos;
+    }
 
     public void resetTime(){
         runtime.reset();
@@ -347,44 +357,90 @@ public class MecanumLinearOpMode extends LinearOpMode{
         return runtime.seconds();
     }
 
-   /* public void disableDetector(){
-        detector.disable();
-    }*/
+    public void disableDetector(){
+        tfod.deactivate();
+    }
 
-    public int checkAlign(){
-        int align = 0;
-        if (tfod != null) {
-            // getUpdatedRecognitions() will return null if no new information is available since
-            // the last time that call was made.
+    public void pushGold(int goldpos, double dist) throws InterruptedException {
+        double power = 0.3;
+        resetTime();
+        telemetry.addData("gold is ", goldpos);
+        telemetry.update();
+        switch (goldpos){
+            case 1:
+                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
+                    telemetry.addData("Doing","Left case");
+                    telemetry.update();
+                    setMotorPowers(-power, power); // TURN LEFT
+                    dist = 15;
+                    break;
+                }*/
+                rotate(0.3, 35, true, 4);
+                break;
+            case 2:
+                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
+                    telemetry.addData("Doing","Center case");
+                    telemetry.update();
+                    setStrafePowers(0.5, false);
+                    dist = 30;
+                    break;
+                }*/
+                strafeDistance(0.5, 3, true);
+                break;
+
+            case 3:
+                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
+                    telemetry.addData("Doing","Right case");
+                    telemetry.update();
+                    setMotorPowers(power, -power); // TURN RIGHT
+                    dist = 45;
+                    break;
+                }*/
+                strafeDistance(0.5, 7, true);
+                rotate(0.3, 35, false, 4);
+                break;
+        }
+        sleep(1000);
+        driveDistance(-0.4, 9); //PUSH AND BACK UP
+        sleep(1000);
+        driveDistance(0.3, 9);
+    }
+
+    public boolean checkAlign(){
+        boolean aligned = false;
+        activateDetector();
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
             if (updatedRecognitions != null) { //IF LIST IS NOT NULL
-                int goldMineralX = -1;
                 telemetry.addData("# of Objects Detected", updatedRecognitions.size()); //GET # OF OBJECTS DETECTED
-                if (updatedRecognitions.size() > 0) { //IF DETECT ALL THREE OBJECTS
+                if (updatedRecognitions.size() > 0) { //IF DETECT BOTH OBJECTS
+                    int goldMineralX = -1;
+                    int silverMineral1X = -1;
+                    int silverMineral2X = -1;
                     for (Recognition recognition : updatedRecognitions) {
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL) && recognition.getTop() < 500) {
-                            //IF OBJECT DETECTED IS GOLD AND ALSO RESTRICT HEIGHT TO AVOID CRATER GOLD CONFUSION
-                            goldMineralX = (int) recognition.getLeft(); //GET X POSITION FROM LEFT (?)
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) { //IF OBJECT DETECTED IS GOLD
+                            goldMineralX = (int) recognition.getLeft();
+                        } else if (silverMineral1X == -1) {
+                            silverMineral1X = (int) recognition.getLeft();
+                        } else {
+                            silverMineral2X = (int) recognition.getLeft();
                         }
-                        telemetry.addData("Gold Mineral Position", goldMineralX);
                     }
-                }
 
-                if (goldMineralX < 300){
-                    align = -1;
-                }else if (goldMineralX > 300 && goldMineralX < 500){
-                    align = 0;
-                }else{
-                    align = 1;
+                    if (goldMineralX > 500 && goldMineralX < 700) {
+                        telemetry.addData("Gold", "Aligned");
+                        aligned = true;
+                    }else{
+                        telemetry.addData("Gold", "Not Aligned");
+                        aligned = false;
+                    }
+                    telemetry.addData("Gold x pos ", goldMineralX);
                 }
-            }else{
-                telemetry.addData("Nothing", "Detected");
-            }
-        }else{
-            telemetry.addData("No", "TFOD");
+                telemetry.update();
+
         }
+
         telemetry.update();
-        return align;
+        return aligned;
     }
 
     public void unlatch(){

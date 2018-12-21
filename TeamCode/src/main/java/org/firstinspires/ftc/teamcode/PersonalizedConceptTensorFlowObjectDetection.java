@@ -133,7 +133,7 @@ public class PersonalizedConceptTensorFlowObjectDetection extends LinearOpMode {
                             telemetry.addData("Gold Mineral Position", "Right");
                         }
 
-                        if (goldMineralX > 400 && goldMineralX < 600) {
+                        if (goldMineralX > 500 && goldMineralX < 700) {
                             telemetry.addData("Gold", "Aligned");
                         }else{
                             telemetry.addData("Gold", "Not Aligned");
