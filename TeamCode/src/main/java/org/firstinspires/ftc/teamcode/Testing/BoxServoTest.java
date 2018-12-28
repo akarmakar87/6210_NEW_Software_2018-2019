@@ -18,9 +18,9 @@ public class BoxServoTest extends MecanumLinearOpMode {
 
         waitForStart();
 
-            marker.setPosition(0.41);
+            marker.setPosition(0.41); // down
             sleep(1000);
-            marker.setPosition(0.2);
+            marker.setPosition(0.2); //up
             sleep(1000);
             telemetry.addData("position: ", 0);
             telemetry.update();

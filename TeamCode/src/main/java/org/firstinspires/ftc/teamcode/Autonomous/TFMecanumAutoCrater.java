@@ -40,7 +40,9 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
         lift.setPower(0.90);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
-        sleep(2000);
+        sleep(1000);
+        lock.setPosition(0);    //Stop lock movement
+        sleep(1000);
         int liftTarget = lift.getCurrentPosition()-640; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
