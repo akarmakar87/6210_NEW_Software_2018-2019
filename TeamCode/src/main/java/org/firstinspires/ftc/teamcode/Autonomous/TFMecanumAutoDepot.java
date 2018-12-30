@@ -3,13 +3,12 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
-@Autonomous(name="TFMecanumAutoCrater", group = "auto")
+@Autonomous(name="TFMecanumAutoDepot", group = "auto")
 //@Disabled
-public class TFMecanumAutoCrater extends MecanumLinearOpMode {
+public class TFMecanumAutoDepot extends MecanumLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -69,21 +68,20 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
         rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
         sleep(1000);
 
-
-        driveDistance(0.5, dist); //MOVE TOWARD WALL
+        driveDistance(-0.5, dist); //MOVE TOWARD WALL
+        rotate(0.2, 45, false, 5);  //TURN TOWARD WALL
+        driveDistance(-0.4, 12);    //ALIGN WITH WALL (by running into it)
+        driveDistance(0.4, 0.5);    //BACK UP FROM WALL (to not get stuck on it)
+        strafeDistance(0.7, 35,true);  //STRAFE INTO DEPOT (IMPORTANT LINE NEEDS REVIEWING TO MAKE SURE IT DOESN'T GO TOO FAR INTO DEPOT)
+        driveDistance(-0.4,5);  //REALIGN WITH WALL (to not hit the mineral)
+        marker.setPosition(0.41);  //DEPLOY MARKER
         sleep(1000);
-        driveDistance(0.5, 5);  //ALIGN WITH WALL (by running into it)
-        driveDistance(-0.5, 0.5);   //MOVE BACK FROM WALL (so we don't get caught on it)
-        strafeDistance(0.8, 17,true);   //STRAFE TOWARD DEPOT
-        driveDistance(0.5,5);   //REALIGN WITH WALL (to avoid hitting a mineral)
-        strafeDistance(0.8, 17,true);   //CONTINUE INTO DEPOT
-        marker.setPosition(0.41);   //DEPLOY MARKER
-        sleep(1000);
-        strafeDistance(0.8, 36.5,false);    //STRAFE TOWARD CRATER
-        driveDistance(-0.5,2.5);    //REALIGN WITH WALL (so we don't hit our alliance partner's mineral)
-        strafeDistance(0.8, dist+10,false); //STRAFE INTO CRATER
-        marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT*/
-
+        //marker.setPosition(0);
+        strafeDistance(0.7, 36.5,false);    //STRAFE TOWARD CRATER
+        driveDistance(-0.4,2.5);    //REALIGN WITH WALL (so we don't hit our alliance's mineral)
+        strafeDistance(0.8, dist,false);    //STRAFE INTO CRATER
+        marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT
         telemetry.addData("Status ", " auto done");
     }
 }
+

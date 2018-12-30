@@ -361,8 +361,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
         tfod.deactivate();
     }
 
-    public void pushGold(int goldpos, double dist) throws InterruptedException {
+    public double pushGold(int goldpos) throws InterruptedException {
         double power = 0.3;
+        double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
         telemetry.update();
@@ -376,6 +377,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     break;
                 }*/
                 rotate(0.3, 35, true, 4);
+                x = 0;
                 break;
             case 2:
                 /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
@@ -385,6 +387,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     dist = 30;
                     break;
                 }*/
+                x = 30;
                 strafeDistance(0.5, 3, true);
                 break;
 
@@ -396,6 +399,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     dist = 45;
                     break;
                 }*/
+                x = 45;
                 strafeDistance(0.5, 7, true);
                 rotate(0.3, 35, false, 4);
                 break;
@@ -403,7 +407,8 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1000);
         driveDistance(-0.4, 9); //PUSH AND BACK UP
         sleep(1000);
-        driveDistance(0.3, 9);
+        driveDistance(0.3, 7);
+        return x;
     }
 
     public boolean checkAlign(){
