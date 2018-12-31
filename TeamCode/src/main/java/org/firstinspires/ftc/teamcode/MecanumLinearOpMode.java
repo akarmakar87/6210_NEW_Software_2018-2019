@@ -408,6 +408,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         driveDistance(-0.4, 9); //PUSH AND BACK UP
         sleep(1000);
         driveDistance(0.3, 7);
+        //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HERE
         return x;
     }
 
