@@ -362,6 +362,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     public double pushGold(int goldpos) throws InterruptedException {
+        double angleOff = 0;
         double power = 0.3;
         double x = 0;
         resetTime();
@@ -376,8 +377,17 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     dist = 15;
                     break;
                 }*/
-                rotate(0.3, 35, true, 4);
-                x = 0;
+                rotate(0.3, 27, true, 4);
+                x = 10;
+                sleep(1000);
+                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5.5);
+                angleOff = getYaw(); //UPDATE ANGLE
+                disableDetector();
+               // rotate(0.2, 90 - angleOff, true, 5);   //ROTATE TOWARD WALL
+             //   rotate(0.3, 180, false, 3);
+                rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
                 break;
             case 2:
                 /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
@@ -387,8 +397,16 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     dist = 30;
                     break;
                 }*/
-                x = 30;
+                x = 20;
                 strafeDistance(0.5, 3, true);
+                sleep(1000);
+                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5.5);
+                angleOff = getYaw(); //UPDATE ANGLE
+                disableDetector();
+                //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
+                rotate(0.2, 90, false, 5);   //ROTATE TOWARD WALL
                 break;
 
             case 3:
@@ -399,15 +417,21 @@ public class MecanumLinearOpMode extends LinearOpMode{
                     dist = 45;
                     break;
                 }*/
-                x = 45;
+                x = 30;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 35, false, 4);
+                rotate(0.3, 27, false, 4);
+                sleep(1000);
+                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5.5);
+                angleOff = getYaw(); //UPDATE ANGLE
+                disableDetector();
+                //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
+                //rotate(0.3, 180, false, 3);
+                rotate(0.2, 60, false, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);
-        driveDistance(-0.4, 9); //PUSH AND BACK UP
-        sleep(1000);
-        driveDistance(0.3, 7);
         //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HERE
         return x;
     }
