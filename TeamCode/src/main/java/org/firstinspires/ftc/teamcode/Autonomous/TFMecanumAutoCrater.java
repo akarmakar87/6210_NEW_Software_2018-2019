@@ -44,7 +44,7 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
             lift.setPower(-1);
         }
         lift.setPower(0);
-        driveDistance(0.3,0.5); //What is this for???
+        driveDistance(0.3,0.5); //What is this for???sdfsdf
         double ang = getYaw();  //Why do we need this???
 
         strafeDistance(-0.4, 7, true); //MOVE A BIT TO TRIGGER CAMERA VIEWING
