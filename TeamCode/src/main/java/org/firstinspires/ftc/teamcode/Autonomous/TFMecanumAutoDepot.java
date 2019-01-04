@@ -48,20 +48,19 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
         }
         lift.setPower(0);
         driveDistance(0.3,0.5); //What is this for???
-        double ang = getYaw();  //Why do we need this???
 
         strafeDistance(-0.3, 5, true); //MOVE A BIT TO TRIGGER CAMERA VIEWING
 
         //START DETECTION
 
-        findGold(2); //GET GOLD POSITION
+        angleOff = findGold(2); //GET GOLD POSITION
         int gold = retPos();
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
         driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold);
+        dist = pushGold(gold,angleOff);
 
         driveDistance(0.5, dist-15); //MOVE TOWARD WALL
         rotate(0.2, 45, false, 5);  //TURN TOWARD WALL

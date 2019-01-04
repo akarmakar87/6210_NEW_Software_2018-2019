@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -301,28 +302,37 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     int pos = 2;
 
-    public void findGold(int timeLimit){
+    public double findGold(int timeLimit){
 
         runtime.reset();
         activateDetector();
+        double goldAngle = 27;
         while (runtime.seconds() < timeLimit && opModeIsActive()){
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
             if (updatedRecognitions != null) { //IF LIST IS NOT NULL
                 telemetry.addData("# of Objects Detected", updatedRecognitions.size()); //GET # OF OBJECTS DETECTED
                 if (updatedRecognitions.size() > 0) { //IF DETECT BOTH OBJECTS
                     int goldMineralX = -1;
+                    double goldMineralConf = 0;
+                    double goldHeight = 0;
                     int silverMineral1X = -1;
                     int silverMineral2X = -1;
                     for (Recognition recognition : updatedRecognitions) {
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) { //IF OBJECT DETECTED IS GOLD
                             goldMineralX = (int) recognition.getLeft();
+                            goldMineralConf = recognition.getConfidence();
+                            goldAngle = recognition.estimateAngleToObject(AngleUnit.DEGREES);
+                            goldHeight = recognition.getHeight();
                         } else if (silverMineral1X == -1) {
                             silverMineral1X = (int) recognition.getLeft();
                         } else {
                             silverMineral2X = (int) recognition.getLeft();
                         }
                     }
-                    if (goldMineralX != -1) {
+                    if (goldMineralX != -1 && goldMineralConf > 0.9 && goldHeight > 5) {
+                        //IF CONFIDENCE LEVEL DOESN'T WORK, TOP VALUE RESTRICTION OR HEIGHT CHECK
+                        //MAKE SURE TO ACTUALLY TEST OUT THESE CONDITIONS BEFORE DECIDING TO USE THEM IN AUTO
+                        //CHECK FOR CONFIDENCE AND HEIGHT OF A NORMAL GOLD SAMPLE VS SNEAKY CRATER GOLD
                         if (goldMineralX < silverMineral1X) {
                             telemetry.addData("Gold Mineral Position", "Left");
                             pos = 1;
@@ -343,6 +353,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.addData("Done with find gold", " ");
         sleep(1000);
         disableDetector();
+        return goldAngle;
     }
 
     public int retPos(){
@@ -361,74 +372,54 @@ public class MecanumLinearOpMode extends LinearOpMode{
         tfod.deactivate();
     }
 
-    public double pushGold(int goldpos) throws InterruptedException {
-        double angleOff = 0;
-        double power = 0.3;
+    public double pushGold(int goldpos, double goldturn) throws InterruptedException {
+       // double angleOff = 0;
+       // double power = 0.3;
         double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
         telemetry.update();
         switch (goldpos){
             case 1:
-                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
-                    telemetry.addData("Doing","Left case");
-                    telemetry.update();
-                    setMotorPowers(-power, power); // TURN LEFT
-                    dist = 15;
-                    break;
-                }*/
-                rotate(0.3, 27, true, 4);
+
+                rotate(0.3, goldturn, true, 4); //WAS 27
                 x = 10;
                 sleep(1000);
                 driveDistance(-0.4, 10.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(0.3, 5.5);
-                angleOff = getYaw(); //UPDATE ANGLE
+               // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                // rotate(0.2, 90 - angleOff, true, 5);   //ROTATE TOWARD WALL
              //   rotate(0.3, 180, false, 3);
-                rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
+                rotate(0.3, 90+goldturn, false,5);   //ROTATE TOWARD WALL
                 break;
             case 2:
-                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
-                    telemetry.addData("Doing","Center case");
-                    telemetry.update();
-                    setStrafePowers(0.5, false);
-                    dist = 30;
-                    break;
-                }*/
                 x = 20;
                 strafeDistance(0.5, 3, true);
                 sleep(1000);
                 driveDistance(-0.4, 10.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(0.3, 5.5);
-                angleOff = getYaw(); //UPDATE ANGLE
+             //   angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
                 rotate(0.2, 90, false, 5);   //ROTATE TOWARD WALL
                 break;
 
             case 3:
-                /*while (!checkAlign() && !isStopRequested() && getRuntime() < 5){
-                    telemetry.addData("Doing","Right case");
-                    telemetry.update();
-                    setMotorPowers(power, -power); // TURN RIGHT
-                    dist = 45;
-                    break;
-                }*/
                 x = 30;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 27, false, 4);
+                rotate(0.3, goldturn, false, 4);
                 sleep(1000);
                 driveDistance(-0.4, 10.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(0.3, 5.5);
-                angleOff = getYaw(); //UPDATE ANGLE
+               // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
-                rotate(0.2, 60, false, 5);   //ROTATE TOWARD WALL
+                rotate(0.2, 90-goldturn, false, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);
@@ -436,7 +427,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         return x;
     }
 
-    public boolean checkAlign(){
+ /**   public boolean checkAlign(){
         boolean aligned = false;
         activateDetector();
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
@@ -471,7 +462,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
         telemetry.update();
         return aligned;
-    }
+    }**/
 
     public void unlatch(){
         lock.setPosition(1);
