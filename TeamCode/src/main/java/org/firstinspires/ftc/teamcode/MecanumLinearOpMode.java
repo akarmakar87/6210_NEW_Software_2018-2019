@@ -302,11 +302,10 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     int pos = 2;
 
-    public double findGold(int timeLimit){
+    public void findGold(int timeLimit){
 
         runtime.reset();
         activateDetector();
-        double goldAngle = 27;
         while (runtime.seconds() < timeLimit && opModeIsActive()){
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
             if (updatedRecognitions != null) { //IF LIST IS NOT NULL
@@ -321,7 +320,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) { //IF OBJECT DETECTED IS GOLD
                             goldMineralX = (int) recognition.getLeft();
                             goldMineralConf = recognition.getConfidence();
-                            goldAngle = recognition.estimateAngleToObject(AngleUnit.DEGREES);
                             goldHeight = recognition.getHeight();
                         } else if (silverMineral1X == -1) {
                             silverMineral1X = (int) recognition.getLeft();
@@ -345,6 +343,8 @@ public class MecanumLinearOpMode extends LinearOpMode{
                         pos = 3;
                     }
                     telemetry.addData("Gold x pos ", goldMineralX);
+                    telemetry.addData("Gold conf ", goldMineralConf);
+                    telemetry.addData("Gold height ", goldHeight);
                 }
                 telemetry.addData("Runtime", getTime());
                 telemetry.update();
@@ -353,7 +353,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.addData("Done with find gold", " ");
         sleep(1000);
         disableDetector();
-        return goldAngle;
     }
 
     public int retPos(){
@@ -372,7 +371,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         tfod.deactivate();
     }
 
-    public double pushGold(int goldpos, double goldturn) throws InterruptedException {
+    public double pushGold(int goldpos) throws InterruptedException {
        // double angleOff = 0;
        // double power = 0.3;
         double x = 0;
@@ -382,7 +381,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         switch (goldpos){
             case 1:
 
-                rotate(0.3, goldturn, true, 4); //WAS 27
+                rotate(0.3, 27, true, 4); //WAS 27
                 x = 10;
                 sleep(1000);
                 driveDistance(-0.4, 10.5); //PUSH AND BACK UP
@@ -390,9 +389,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 driveDistance(0.3, 5.5);
                // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
-               // rotate(0.2, 90 - angleOff, true, 5);   //ROTATE TOWARD WALL
+                //rotate(0.2, 60, true, 5);   //ROTATE TOWARD WALL
              //   rotate(0.3, 180, false, 3);
-                rotate(0.3, 90+goldturn, false,5);   //ROTATE TOWARD WALL
+                rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
                 break;
             case 2:
                 x = 20;
@@ -410,7 +409,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
             case 3:
                 x = 30;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, goldturn, false, 4);
+                rotate(0.3, 27, false, 4);
                 sleep(1000);
                 driveDistance(-0.4, 10.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -419,7 +418,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 disableDetector();
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
-                rotate(0.2, 90-goldturn, false, 5);   //ROTATE TOWARD WALL
+                rotate(0.2, 60, false, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);

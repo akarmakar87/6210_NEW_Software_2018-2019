@@ -39,9 +39,9 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
         lift.setPower(0.90);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
-        sleep(1000);
+        sleep(1500);
         lock.setPosition(0);    //Stop lock movement
-        sleep(1000);
+        sleep(500);
         int liftTarget = lift.getCurrentPosition()-640; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
@@ -53,16 +53,16 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
 
         //START DETECTION
 
-        angleOff = findGold(2); //GET GOLD POSITION
+        findGold(2); //GET GOLD POSITION
         int gold = retPos();
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
         driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold,angleOff);
+        dist = pushGold(gold);
 
-        driveDistance(0.5, dist-15); //MOVE TOWARD WALL
+        driveDistance(0.5, dist); //MOVE TOWARD WALL
         rotate(0.2, 45, false, 5);  //TURN TOWARD WALL
        // driveDistance(0.4, 10);    //ALIGN WITH WALL (by running into it)
         driveDistance(-0.4, 0.5);    //BACK UP FROM WALL (to not get stuck on it)

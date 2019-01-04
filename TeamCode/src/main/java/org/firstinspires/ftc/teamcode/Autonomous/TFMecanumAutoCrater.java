@@ -39,13 +39,13 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
         sleep(1500);
         lock.setPosition(0);    //Stop lock movement
         sleep(500);
-        int liftTarget = lift.getCurrentPosition()-640; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-630; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
         lift.setPower(0);
         driveDistance(0.3,0.5); //What is this for???
-        double ang = 0;  //Why do we need this???
+        double ang = getYaw();  //Why do we need this???
 
         strafeDistance(-0.4, 7, true); //MOVE A BIT TO TRIGGER CAMERA VIEWING
 
@@ -62,7 +62,7 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
 
         driveDistance(0.5, dist); //MOVE TOWARD WALL
         sleep(1000);
-        driveDistance(0.2, 10);  //ALIGN WITH WALL (by running into it) !!!!SPEED CAUSES DC
+        driveDistance(0.3, 10);  //ALIGN WITH WALL (by running into it) !!!!SPEED CAUSES DC
         driveDistance(-0.5, 0.5);   //MOVE BACK FROM WALL (so we don't get caught on it)
         strafeDistance(0.8, 17,true);   //STRAFE TOWARD DEPOT
         driveDistance(0.5,5);   //REALIGN WITH WALL (to avoid hitting a mineral)
