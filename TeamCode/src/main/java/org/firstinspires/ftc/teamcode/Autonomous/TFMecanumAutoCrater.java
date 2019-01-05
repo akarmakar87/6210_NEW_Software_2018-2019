@@ -32,7 +32,7 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
 
         double dist = 0;
         waitForStart();
-
+//
         lift.setPower(0.90);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
@@ -56,7 +56,7 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
-        driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE 
+        driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
         dist = pushGold(gold);
 
