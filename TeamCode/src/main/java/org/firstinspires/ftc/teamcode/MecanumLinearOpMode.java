@@ -327,7 +327,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                             silverMineral2X = (int) recognition.getLeft();
                         }
                     }
-                    if (goldMineralX != -1 && goldMineralConf > 0.9 && goldHeight > 5) {
+                    if (goldMineralX != -1 && goldMineralConf > 0.3 && goldHeight > 50) {
                         //IF CONFIDENCE LEVEL DOESN'T WORK, TOP VALUE RESTRICTION OR HEIGHT CHECK
                         //MAKE SURE TO ACTUALLY TEST OUT THESE CONDITIONS BEFORE DECIDING TO USE THEM IN AUTO
                         //CHECK FOR CONFIDENCE AND HEIGHT OF A NORMAL GOLD SAMPLE VS SNEAKY CRATER GOLD

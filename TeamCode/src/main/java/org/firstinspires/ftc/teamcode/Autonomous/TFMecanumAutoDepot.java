@@ -39,9 +39,9 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
         lift.setPower(0.90);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
-        sleep(1500);
+        sleep(1250);
         lock.setPosition(0);    //Stop lock movement
-        sleep(500);
+        sleep(750);
         int liftTarget = lift.getCurrentPosition()-640; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
