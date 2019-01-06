@@ -61,11 +61,11 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
 
         dist = pushGold(gold, false);
 
-        driveDistance(0.5, dist); //MOVE TOWARD WALL
+        driveDistance(-0.5, dist); //MOVE TOWARD WALL
         sleep(1000);
         rotate(1, 20, false, 2);
-        driveTime(0.3, 1);
-        //driveDistance(0.2, 1.5); //MOVE TOWARD WALL
+        driveTime(-0.3, 1);
+        //driveDistance(0.3, 1.5); //MOVE TOWARD WALL
         //driveDistance(-0.5, 0.5);   //MOVE BACK FROM WALL (so we don't get caught on it)
         strafeDistance(0.8, 35,false);   //STRAFE TOWARD DEPOT
         //driveDistance(0.5,5);   //REALIGN WITH WALL (to avoid hitting a minera
@@ -75,7 +75,7 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
         //strafeDistance(0.8, 36.5,false);    //STRAFE TOWARD CRATER
         // driveDistance(0.5,2.5);    //REALIGN WITH WALL (so we don't hit our alliance partner's mineral)
         strafeDistance(0.8, 72,true); //STRAFE INTO CRATER
-        marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT*/
+        marker.setPosition(0.3);    //RETRACT MARKER DEPLOYMENT*/
         telemetry.addData("Status ", " auto done");
     }
 }

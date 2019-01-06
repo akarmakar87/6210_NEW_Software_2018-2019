@@ -407,9 +407,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
                 if (crater)
-                    rotate(0.2, 90, false,5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 90, false,5);   //ROTATE TOWARD WALL
                 else
-                    rotate(0.2, 90, true, 5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 90, true, 5);   //ROTATE TOWARD WALL
                 break;
 
             case 3:
@@ -425,9 +425,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
                 if (crater)
-                    rotate(0.2, 60, false,5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 60, false,5);   //ROTATE TOWARD WALL
                 else
-                    rotate(0.2, 120, true, 5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 120, true, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);
