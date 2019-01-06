@@ -18,7 +18,7 @@ public class DSMecanumAutoCrater extends MecanumLinearOpMode {
         double angleOff = 0;
 
         init(hardwareMap, true);
-
+//
         // Set up detector
         initVuforia();
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
