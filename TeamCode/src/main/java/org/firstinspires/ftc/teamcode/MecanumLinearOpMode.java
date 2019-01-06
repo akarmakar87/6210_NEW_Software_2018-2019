@@ -132,6 +132,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     // TIME BASED MOVEMENT
     public void driveTime(double power, long seconds){
         setMotorPowers(power, power);
+        seconds *= 1000;
         sleep(seconds);
     }
 
@@ -302,7 +303,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     int pos = 2;
 
-    public void findGold(int timeLimit){
+    public void findGold(double timeLimit){
 
         runtime.reset();
         activateDetector();
@@ -327,7 +328,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                             silverMineral2X = (int) recognition.getLeft();
                         }
                     }
-                    if (goldMineralX != -1 && goldMineralConf > 0.3 && goldHeight > 50) {
+                    if (goldMineralX != -1 && goldMineralConf > 0.2 && goldHeight > 50) {
                         //IF CONFIDENCE LEVEL DOESN'T WORK, TOP VALUE RESTRICTION OR HEIGHT CHECK
                         //MAKE SURE TO ACTUALLY TEST OUT THESE CONDITIONS BEFORE DECIDING TO USE THEM IN AUTO
                         //CHECK FOR CONFIDENCE AND HEIGHT OF A NORMAL GOLD SAMPLE VS SNEAKY CRATER GOLD
@@ -371,7 +372,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         tfod.deactivate();
     }
 
-    public double pushGold(int goldpos) throws InterruptedException {
+    public double pushGold(int goldpos, boolean crater) throws InterruptedException {
        // double angleOff = 0;
        // double power = 0.3;
         double x = 0;
@@ -380,45 +381,53 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.update();
         switch (goldpos){
             case 1:
-
-                rotate(0.3, 27, true, 4); //WAS 27
+                rotate(0.3, 30, true, 4); //WAS 27
                 x = 10;
                 sleep(1000);
-                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5.5);
+                driveDistance(0.3, 4.5);
                // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 60, true, 5);   //ROTATE TOWARD WALL
              //   rotate(0.3, 180, false, 3);
-                rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
+                if (crater)
+                    rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
+                else
+                    rotate(0.3, 60, true,5);   //ROTATE TOWARD WALL
                 break;
             case 2:
                 x = 20;
-                strafeDistance(0.5, 3, true);
+                strafeDistance(0.5, 5, true);
                 sleep(1000);
-                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5.5);
+                driveDistance(0.3, 4.5);
              //   angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
-                rotate(0.2, 90, false, 5);   //ROTATE TOWARD WALL
+                if (crater)
+                    rotate(0.2, 90, false,5);   //ROTATE TOWARD WALL
+                else
+                    rotate(0.2, 90, true, 5);   //ROTATE TOWARD WALL
                 break;
 
             case 3:
-                x = 30;
+                x = 28;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 27, false, 4);
+                rotate(0.3, 30, false, 4);
                 sleep(1000);
-                driveDistance(-0.4, 10.5); //PUSH AND BACK UP
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5.5);
+                driveDistance(0.3, 4.5);
                // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
-                rotate(0.2, 60, false, 5);   //ROTATE TOWARD WALL
+                if (crater)
+                    rotate(0.2, 60, false,5);   //ROTATE TOWARD WALL
+                else
+                    rotate(0.2, 120, true, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);

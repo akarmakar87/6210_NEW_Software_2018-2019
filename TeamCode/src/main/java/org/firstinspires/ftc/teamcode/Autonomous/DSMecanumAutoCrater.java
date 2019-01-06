@@ -61,7 +61,7 @@ public class DSMecanumAutoCrater extends MecanumLinearOpMode {
         telemetry.update();
         driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold);
+        dist = pushGold(gold, true);
 
         angleOff = getYaw(); //UPDATE ANGLE
         disableDetector();

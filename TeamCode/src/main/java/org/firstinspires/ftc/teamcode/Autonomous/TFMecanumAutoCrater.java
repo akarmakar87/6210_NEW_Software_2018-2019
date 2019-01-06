@@ -39,41 +39,44 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
         sleep(1250);
         lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-630; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-1500; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
         lift.setPower(0);
-        driveDistance(0.3,0.5); //What is this for???
+        sleep(250);
+        //driveDistance(0.3,0.5); //What is this for???
         double ang = getYaw();  //Why do we need this???
 
         strafeDistance(-0.4, 7, true); //MOVE A BIT TO TRIGGER CAMERA VIEWING
 
         //START DETECTION
 
-        findGold(2); //GET GOLD POSITION
+        findGold(1.25); //GET GOLD POSITION
+        tfod.deactivate();
         int gold = retPos();
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
         driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold);
+        dist = pushGold(gold,true);
 
         driveDistance(0.5, dist); //MOVE TOWARD WALL
         sleep(1000);
-        rotate(1, 50, false, 2);
+        rotate(1, 20, false, 2);
+        driveTime(0.3, 1);
+        //driveDistance(0.2, 1.5); //MOVE TOWARD WALL
         //driveDistance(-0.5, 0.5);   //MOVE BACK FROM WALL (so we don't get caught on it)
-        strafeDistance(0.8, 30,true);   //STRAFE TOWARD DEPOT
-        //driveDistance(0.5,5);   //REALIGN WITH WALL (to avoid hitting a mineral)
+        strafeDistance(0.8, 35,true);   //STRAFE TOWARD DEPOT
+        //driveDistance(0.5,5);   //REALIGN WITH WALL (to avoid hitting a minera
         //strafeDistance(0.8, 17,true);   //CONTINUE INTO DEPOT
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(1000);
-        strafeDistance(0.8, 36.5,false);    //STRAFE TOWARD CRATER
+        //strafeDistance(0.8, 36.5,false);    //STRAFE TOWARD CRATER
         // driveDistance(0.5,2.5);    //REALIGN WITH WALL (so we don't hit our alliance partner's mineral)
-        strafeDistance(0.8, 35,false); //STRAFE INTO CRATER
+        strafeDistance(0.8, 72,false); //STRAFE INTO CRATER
         marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT*/
-        tfod.deactivate();
         telemetry.addData("Status ", " auto done");
     }
 }
