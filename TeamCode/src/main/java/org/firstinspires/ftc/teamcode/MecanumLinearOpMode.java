@@ -332,7 +332,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                         //IF CONFIDENCE LEVEL DOESN'T WORK, TOP VALUE RESTRICTION OR HEIGHT CHECK
                         //MAKE SURE TO ACTUALLY TEST OUT THESE CONDITIONS BEFORE DECIDING TO USE THEM IN AUTO
                         //CHECK FOR CONFIDENCE AND HEIGHT OF A NORMAL GOLD SAMPLE VS SNEAKY CRATER GOLD
-                        if (goldMineralX < silverMineral1X || goldMineralX < 600) {
+                        if (goldMineralX < 600 || goldMineralX < silverMineral1X) {
                             telemetry.addData("Gold Mineral Position", "Left");
                             pos = 1;
                         } else{
@@ -476,7 +476,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1250);
         lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-4800; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-5200; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
