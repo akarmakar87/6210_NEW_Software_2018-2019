@@ -33,19 +33,19 @@ public class MainTeleOp extends MecanumLinearOpMode {
 
             //left motor
             if(Math.abs(gamepad1.left_stick_y) > 0.05){
-                leftPower = gamepad1.left_stick_y * scale;
+                leftPower = -gamepad1.left_stick_y * scale;
             }else{
                 leftPower = 0;
             }
             //right motor
             if(Math.abs(gamepad1.right_stick_y) > 0.05){
-                rightPower = gamepad1.right_stick_y * scale;
+                rightPower = -gamepad1.right_stick_y * scale;
             }else{
                 rightPower = 0;
             }
 //h
             //halfspeed
-            if (gamepad1.right_trigger > 0.5) {
+            if (gamepad1.right_trigger > 0.5 || gamepad2.right_trigger > 0.5) {
                 halfSpeed = true;
                 leftPower = leftPower / 2;
                 rightPower = rightPower / 2;
@@ -53,7 +53,7 @@ public class MainTeleOp extends MecanumLinearOpMode {
                 halfSpeed = false;
             }
 
-            //lift//
+            //lift
             if (gamepad2.right_bumper) {
                 lift.setPower(1); //Lift Down
             }else if(gamepad2.left_bumper){
@@ -70,12 +70,9 @@ public class MainTeleOp extends MecanumLinearOpMode {
             }
 
             //DON'T NEED BECAUSE AUTO GETS IT OUT OF THE WAY AND DON'T NEED IT IN TELE-OP
-            /*while (gamepad2.b) {
-                lock.setPosition(0);
+            if(gamepad2.a){
+                setHook();
             }
-            while (gamepad2.a){
-                lock.setPosition(-1);
-            }*/
 
             //Strafe Controls
             if (gamepad1.right_bumper){ //Strafe right

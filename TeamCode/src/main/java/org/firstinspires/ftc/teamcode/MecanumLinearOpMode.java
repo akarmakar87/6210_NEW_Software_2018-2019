@@ -130,10 +130,10 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     // TIME BASED MOVEMENT
-    public void driveTime(double power, long seconds){
+    public void driveTime(double power, double seconds){
         setMotorPowers(power, power);
-        seconds *= 1000;
-        sleep(seconds);
+        long time = (long)(seconds) * 1000;
+        sleep(time);
     }
 
     // TIME BASED TURNING
@@ -332,7 +332,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                         //IF CONFIDENCE LEVEL DOESN'T WORK, TOP VALUE RESTRICTION OR HEIGHT CHECK
                         //MAKE SURE TO ACTUALLY TEST OUT THESE CONDITIONS BEFORE DECIDING TO USE THEM IN AUTO
                         //CHECK FOR CONFIDENCE AND HEIGHT OF A NORMAL GOLD SAMPLE VS SNEAKY CRATER GOLD
-                        if (goldMineralX < silverMineral1X) {
+                        if (goldMineralX < silverMineral1X || goldMineralX < 600) {
                             telemetry.addData("Gold Mineral Position", "Left");
                             pos = 1;
                         } else{
@@ -381,16 +381,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.update();
         switch (goldpos){
             case 1:
-                rotate(0.3, 30, true, 4); //WAS 27
-                x = 10;
+                rotate(0.3, 35, true, 4); //WAS 27
+                x = 15;
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 4.5);
-               // angleOff = getYaw(); //UPDATE ANGLE
+                driveDistance(0.3, 5);
                 disableDetector();
-                //rotate(0.2, 60, true, 5);   //ROTATE TOWARD WALL
-             //   rotate(0.3, 180, false, 3);
                 if (crater)
                     rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
                 else
@@ -398,11 +395,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
             case 2:
                 x = 20;
-                strafeDistance(0.5, 5, true);
+                //strafeDistance(0.5, 3, true);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 4.5);
+                driveDistance(0.3, 5.5);
              //   angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
@@ -413,13 +410,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
 
             case 3:
-                x = 28;
+                x = 27;
                 strafeDistance(0.5, 7, true);
                 rotate(0.3, 30, false, 4);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 4.5);
+                driveDistance(0.3, 5.5);
                // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
@@ -472,8 +469,29 @@ public class MecanumLinearOpMode extends LinearOpMode{
         return aligned;
     }**/
 
-    public void unlatch(){
-        lock.setPosition(1);
+    public void unlatch() throws InterruptedException {
+        lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
+        lock.setPosition(1);    //UNLOCK LIFT
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
+        sleep(1250);
+        lock.setPosition(0);    //Stop lock movement
+        sleep(750);
+        int liftTarget = lift.getCurrentPosition()-4800; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
+            lift.setPower(-1);
+        }
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setPower(0);
+        sleep(250);
+        //MOVE A BIT TO TRIGGER CAMERA VIEWING
+        strafeDistance(-0.6, 3, true);
+    }
+
+    public void setHook() throws InterruptedException {
+        int liftTarget = lift.getCurrentPosition()-4800; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
+            lift.setPower(-1);
+        }
     }
 
     public void initVuforia() {
