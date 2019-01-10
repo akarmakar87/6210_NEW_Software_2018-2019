@@ -370,6 +370,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     public void disableDetector(){
         tfod.deactivate();
+        tfod.shutdown();
     }
 
     public void pushGoldEm(int goldpos) throws InterruptedException {
@@ -521,7 +522,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1250);
         lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-5200; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-4100; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }

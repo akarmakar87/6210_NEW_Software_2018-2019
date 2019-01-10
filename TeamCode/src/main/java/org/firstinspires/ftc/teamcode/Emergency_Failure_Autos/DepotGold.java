@@ -35,7 +35,7 @@ public class DepotGold extends MecanumLinearOpMode {
 
         //START DETECTION
 
-        findGold(1.25); //GET GOLD POSITION
+        findGold(2); //GET GOLD POSITION
         tfod.deactivate();
         int gold = retPos();
         sleep(1000);
