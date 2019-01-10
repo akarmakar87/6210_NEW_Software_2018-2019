@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.AutoLinearOpMode;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @TeleOp(name = "HangTest", group = "Hang")
-//@Disabled
+@Disabled
 public class HangTest extends MecanumLinearOpMode {
 
     @Override

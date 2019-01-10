@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.AutoLinearOpMode;
 
 @TeleOp(name="MecanumTeleOp", group="teleop")
-//@Disabled
+@Disabled
 public class MecanumTeleOp extends AutoLinearOpMode {
 
     @Override

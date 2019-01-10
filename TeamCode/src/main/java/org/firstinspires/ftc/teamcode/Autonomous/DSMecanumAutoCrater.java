@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @Autonomous(name="DSMecanumAutoCrater", group = "auto")
-//@Disabled
+@Disabled
 public class DSMecanumAutoCrater extends MecanumLinearOpMode {
 
     @Override

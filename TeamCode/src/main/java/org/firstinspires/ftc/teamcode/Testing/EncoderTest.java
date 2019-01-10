@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @Autonomous(name="EncoderTest", group = "auto")
 
-//@Disabled
+@Disabled
 
 public class EncoderTest extends MecanumLinearOpMode {
 

@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @Autonomous(name="MecanumAutoDepot", group = "auto")
-//@Disabled
+@Disabled
 public class MecanumAutoDepot extends MecanumLinearOpMode {
 
     @Override

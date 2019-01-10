@@ -372,6 +372,51 @@ public class MecanumLinearOpMode extends LinearOpMode{
         tfod.deactivate();
     }
 
+    public void pushGoldEm(int goldpos) throws InterruptedException {
+        // double angleOff = 0;
+        // double power = 0.3;
+        double x = 0;
+        resetTime();
+        telemetry.addData("gold is ", goldpos);
+        telemetry.update();
+        switch (goldpos){
+            case 1:
+                rotate(0.3, 35, true, 4); //WAS 27
+                x = 15;
+                sleep(1000);
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5);
+                disableDetector();
+                break;
+            case 2:
+                x = 20;
+                //strafeDistance(0.5, 3, true);
+                sleep(1000);
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5.5);
+                //   angleOff = getYaw(); //UPDATE ANGLE
+                disableDetector();
+                //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
+                break;
+
+            case 3:
+                x = 27;
+                strafeDistance(0.5, 7, true);
+                rotate(0.3, 30, false, 4);
+                sleep(1000);
+                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                sleep(1000);
+                driveDistance(0.3, 5.5);
+                // angleOff = getYaw(); //UPDATE ANGLE
+                disableDetector();
+                break;
+        }
+        sleep(1000);
+        //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HER
+    }
+
     public double pushGold(int goldpos, boolean crater) throws InterruptedException {
        // double angleOff = 0;
        // double power = 0.3;
