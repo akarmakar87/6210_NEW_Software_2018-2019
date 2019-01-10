@@ -513,9 +513,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.update();
         return aligned;
     }**/
-
+//
     public void unlatch() throws InterruptedException {
-        lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
+        //lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
         sleep(1250);
