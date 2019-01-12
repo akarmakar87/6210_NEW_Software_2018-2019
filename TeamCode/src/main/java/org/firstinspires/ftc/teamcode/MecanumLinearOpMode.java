@@ -458,7 +458,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
             case 3:
                 x = 27;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 30, false, 4);
+                rotate(0.3, 35, false, 4);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -468,7 +468,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
                 if (crater)
-                    rotate(0.3, 60, false,5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 55, false,5);   //ROTATE TOWARD WALL
                 else
                     rotate(0.3, 120, true, 5);   //ROTATE TOWARD WALL
                 break;
@@ -522,7 +522,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1250);
         lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-4100; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-4000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
@@ -530,11 +530,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
         lift.setPower(0);
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
-        strafeDistance(-0.6, 3, true);
+        strafeDistance(-0.75, 3, true);
     }
 
     public void setHook() throws InterruptedException {
-        int liftTarget = lift.getCurrentPosition()-4800; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-4000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }

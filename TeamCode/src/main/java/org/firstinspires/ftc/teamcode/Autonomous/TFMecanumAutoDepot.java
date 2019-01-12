@@ -48,13 +48,14 @@ public class TFMecanumAutoDepot extends MecanumLinearOpMode {
 
         driveDistance(-0.5, dist-10); //MOVE TOWARD WALL
         sleep(500);
-        rotate(1, 20, false, 2);
+        rotate(1, 15, false, 2);
         driveTime(-0.3, 2);
         sleep(500);
         driveTime(0.3, .25);
         strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(500);
+        driveTime(-0.3, 1);
         strafeDistance(0.8, 55,false); //STRAFE INTO CRATER
         driveTime(-0.3, 1);
         strafeDistance(0.8, 20,false); //STRAFE INTO CRATER

@@ -49,7 +49,7 @@ public class TFMecanumAutoCrater extends MecanumLinearOpMode {
 
         driveDistance(0.5, dist); //MOVE TOWARD WALL
         sleep(500);
-        rotate(1, 15, false, 2);
+        rotate(1, 10, false, 2);
         driveTime(0.3, 1);
         sleep(500);
         driveTime(-0.3, .25);
