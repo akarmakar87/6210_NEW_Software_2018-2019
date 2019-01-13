@@ -437,7 +437,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 if (crater)
                     rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
                 else
-                    rotate(0.3, 60, true,5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 55, true,5);   //ROTATE TOWARD WALL
                 break;
             case 2:
                 x = 20;
@@ -470,7 +470,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 if (crater)
                     rotate(0.3, 55, false,5);   //ROTATE TOWARD WALL
                 else
-                    rotate(0.3, 120, true, 5);   //ROTATE TOWARD WALL
+                    rotate(0.3, 125, true, 5);   //ROTATE TOWARD WALL
                 break;
         }
         sleep(1000);
@@ -518,9 +518,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public void unlatch() throws InterruptedException {
         //lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
+        sleep(400);
+        lock.setPosition(0);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
         sleep(1250);
-        lock.setPosition(0);    //Stop lock movement
+        //lock.setPosition(0);    //Stop lock movement
         sleep(750);
         int liftTarget = lift.getCurrentPosition()-4000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
