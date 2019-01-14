@@ -62,6 +62,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         RB  = map.dcMotor.get("RB");
         marker = map.servo.get("marker");
         imu            = map.get(BNO055IMU.class, "imu"); // Check which IMU is being used
+
         lift  = map.dcMotor.get("lift");
         lock  = map.servo.get("lock");
 
@@ -229,14 +230,18 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
 
     //UPDATE ANGLE
-    public void updateValues() {
+    /*public void updateValues() {
         angles = imu.getAngularOrientation();
     }
-
+*/
     //GET ANGLE
     public double getYaw() {
-        updateValues();
+        //updateValues();
         return angles.firstAngle;
+    }
+
+    public Orientation getAngles() {
+        return angles;
     }
 
     //ROTATE USING GYRO
