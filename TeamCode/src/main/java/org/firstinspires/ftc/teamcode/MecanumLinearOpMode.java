@@ -230,13 +230,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
 
     //UPDATE ANGLE
-    /*public void updateValues() {
+    public void updateValues() {
         angles = imu.getAngularOrientation();
     }
-*/
+
     //GET ANGLE
     public double getYaw() {
-        //updateValues();
+        updateValues();
         return angles.firstAngle;
     }
 
@@ -523,8 +523,8 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public void unlatch() throws InterruptedException {
         //lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
-        sleep(400);
-        lock.setPosition(0);
+        sleep(1000);
+        lock.setPosition(0.51);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
         sleep(1250);
         //lock.setPosition(0);    //Stop lock movement
