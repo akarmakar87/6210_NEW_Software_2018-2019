@@ -10,9 +10,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -21,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import java.util.List;
 
 
-public class MecanumLinearOpMode extends LinearOpMode{
+public class OldMecanumLinearOpMode extends LinearOpMode{
 
     // DECLARE VARIABLES TO BE USED
     ElapsedTime runtime;
@@ -63,7 +60,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         LB  = map.dcMotor.get("LB");
         RB  = map.dcMotor.get("RB");
         marker = map.servo.get("marker");
-        imu = map.get(BNO055IMU.class, "imu"); // Check which IMU is being used
+        imu            = map.get(BNO055IMU.class, "imu"); // Check which IMU is being used
 
         lift  = map.dcMotor.get("lift");
         lock  = map.servo.get("lock");
@@ -92,8 +89,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
             bparameters.loggingEnabled = false;
 
             imu.initialize(bparameters);
-
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //GET ORIENTATION
 
             telemetry.addData("Mode", "calibrating...");
             telemetry.update();
@@ -234,14 +229,22 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
 
     //UPDATE ANGLE
+    public void updateValues() {
+        angles = imu.getAngularOrientation();
+    }
 
     //GET ANGLE
     public double getYaw() {
+        updateValues();
         return angles.firstAngle;
     }
 
+    public Orientation getAngles() {
+        return angles;
+    }
+
     //ROTATE USING GYRO
-   /** public void rotateP(double targetAngleChange, boolean turnRight, int timeout) {
+    public void rotateP(double targetAngleChange, boolean turnRight, int timeout) {
 
         runtime.reset();
 
@@ -268,7 +271,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
         }
         stopMotors();
-    }**/
+    }
 
 
     //ROTATE USING GYRO

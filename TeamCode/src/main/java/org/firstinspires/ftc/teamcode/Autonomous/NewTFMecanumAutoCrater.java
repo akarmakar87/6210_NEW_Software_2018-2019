@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
-import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
-@Autonomous(name="TFMecanumAutoCrater", group = "auto")
+@Autonomous(name="NewTFMecanumAutoCrater", group = "auto")
 //@Disabled
-public class TFMecanumAutoCrater extends OldMecanumLinearOpMode {
+public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
