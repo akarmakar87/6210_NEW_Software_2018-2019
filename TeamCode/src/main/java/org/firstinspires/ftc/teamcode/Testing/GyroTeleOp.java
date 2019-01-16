@@ -18,7 +18,7 @@ public class GyroTeleOp extends MecanumLinearOpMode {
 
         while (opModeIsActive()) {
 
-            updateValues();
+            //updateValues();
             telemetry.addData("Raw angle: ", getYaw());
             telemetry.addData("Converted 360 angle: ", getYaw());
             telemetry.update();
