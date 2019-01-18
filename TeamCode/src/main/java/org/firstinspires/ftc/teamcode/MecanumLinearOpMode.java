@@ -272,30 +272,38 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
 
     //ROTATE USING GYRO
-    public void rotate(double power, double targetAngleChange, boolean turnRight, int timeout) {
+    public void rotate(double dontneed, double targetAngleChange, boolean dontneed2, int timeout) {
 
         runtime.reset();
 
-        targetAngleChange -= 5;
+        double power = 0;
+        double origDiff = getYaw() - targetAngleChange;
+        double deltaHeading = 0;
 
-        double initAngle = getYaw();
-        telemetry.addData("Initial Angle", initAngle);
-        telemetry.update();
+        while ((Math.abs(getYaw()-targetAngleChange) > 1) && opModeIsActive() && (runtime.seconds() < timeout)) {
 
-        double currAngleChange = getYaw() - initAngle;
-        telemetry.addData("CurrAngleChange", currAngleChange);
-        telemetry.update();
-
-        while ((Math.abs(getYaw() - initAngle) < targetAngleChange) && opModeIsActive() && (runtime.seconds() < timeout)) {
-            if (turnRight){
-                setMotorPowers(power,-power);
-            }else {
-                setMotorPowers(-power, power);
-            }
-
-            telemetry.addData("Angle left", targetAngleChange - currAngleChange);
+            telemetry.addData("Turning:", "From " + getYaw() + " to " + targetAngleChange);
             telemetry.update();
 
+            deltaHeading = getYaw() - targetAngleChange;
+            power = Range.clip(deltaHeading/origDiff, 0.2, 1);
+
+            if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) {
+                LF.setPower(-power);
+                LB.setPower(-power);
+                RF.setPower(power);
+                RB.setPower(power);
+            } else {
+                LF.setPower(power);
+                LB.setPower(power);
+                RF.setPower(-power);
+                RF.setPower(-power);
+            }
+            /*
+             * Turn left if the difference from where we're heading to where we want to head
+             * is smaller than -180 or is between 1 and 180.  All else (including the 0 and 180
+             * situations) turn right.
+             */
         }
         stopMotors();
     }
