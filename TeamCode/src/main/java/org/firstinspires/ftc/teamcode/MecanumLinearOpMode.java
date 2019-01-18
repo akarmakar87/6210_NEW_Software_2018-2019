@@ -82,9 +82,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
         resetEncoders();
 
         //SET UP GYRO
-        if (auto) {
-            angles = new Orientation();
+        angles = new Orientation();
 
+        if (auto) {
             BNO055IMU.Parameters bparameters = new BNO055IMU.Parameters();
             bparameters.mode = BNO055IMU.SensorMode.IMU;
             bparameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
