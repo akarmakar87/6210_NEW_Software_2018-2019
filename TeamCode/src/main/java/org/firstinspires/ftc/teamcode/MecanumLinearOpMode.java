@@ -31,6 +31,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public DcMotor RF;
     public DcMotor LB;
     public DcMotor RB;
+    public DcMotor intakeL;
+    public DcMotor intakeR;
+    public DcMotor spinner;
     public BNO055IMU imu;
     public DcMotor lift;
     public Servo marker;
@@ -62,16 +65,19 @@ public class MecanumLinearOpMode extends LinearOpMode{
         RF  = map.dcMotor.get("RF");
         LB  = map.dcMotor.get("LB");
         RB  = map.dcMotor.get("RB");
+        spinner = map.dcMotor.get("spinner");
+        intakeL  = map.dcMotor.get("intakeL");
+        intakeR  = map.dcMotor.get("intakeR");
         marker = map.servo.get("marker");
         imu = map.get(BNO055IMU.class, "imu"); // Check which IMU is being used
 
         lift  = map.dcMotor.get("lift");
         lock  = map.servo.get("lock");
 
-        LF.setDirection(DcMotorSimple.Direction.REVERSE);
-        RF.setDirection(DcMotorSimple.Direction.FORWARD);
-        RB.setDirection(DcMotorSimple.Direction.FORWARD);
-        LB.setDirection(DcMotorSimple.Direction.REVERSE);
+        LF.setDirection(DcMotorSimple.Direction.FORWARD);
+        RF.setDirection(DcMotorSimple.Direction.REVERSE);
+        RB.setDirection(DcMotorSimple.Direction.REVERSE);
+        LB.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         LF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -93,7 +99,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
             imu.initialize(bparameters);
 
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //GET ORIENTATION
+            angles = imu.getAngularOrientation(); //GET ORIENTATION
 
             telemetry.addData("Mode", "calibrating...");
             telemetry.update();
@@ -121,17 +127,43 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     public void setStrafePowers(double power, boolean right){
         if (right){
-            LF.setPower(-Range.clip(power, -1, 1));
-            RF.setPower(Range.clip(power, -1, 1));
-            LB.setPower(Range.clip(power, -1, 1));
-            RB.setPower(-Range.clip(power, -1, 1));
-        }else{
             LF.setPower(Range.clip(power, -1, 1));
             RF.setPower(-Range.clip(power, -1, 1));
             LB.setPower(-Range.clip(power, -1, 1));
             RB.setPower(Range.clip(power, -1, 1));
+        }else{
+            LF.setPower(-Range.clip(power, -1, 1));
+            RF.setPower(Range.clip(power, -1, 1));
+            LB.setPower(Range.clip(power, -1, 1));
+            RB.setPower(-Range.clip(power, -1, 1));
         }
 
+    }
+
+    public void strafeAdjust(double power, double distance, boolean right, int timeout){
+
+        double deltaHeading = 0;
+
+        power = Range.clip(0.4 * deltaHeading, 0.2, 1);
+
+        resetEncoders();
+        while (getEncoderAvg() < distance * 55 && !isStopRequested()) {
+
+           deltaHeading = getYaw();
+           power = Range.clip(deltaHeading/0.5, 0.2, 1);
+
+           if (right) {
+               LF.setPower(-power);
+               RF.setPower(power);
+               LB.setPower(power);
+               RB.setPower(-power);
+           } else {
+               LF.setPower(power);
+               RF.setPower(-power);
+               LB.setPower(-power);
+               RB.setPower(power);
+           }
+        }
     }
 
     // TIME BASED MOVEMENT
@@ -237,6 +269,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     //GET ANGLE
     public double getYaw() {
+        angles = imu.getAngularOrientation();
         return angles.firstAngle;
     }
 
@@ -272,7 +305,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
 
     //ROTATE USING GYRO
-    public void rotate(double dontneed, double targetAngleChange, boolean dontneed2, int timeout) {
+    public void rotate(double targetAngleChange, int timeout) {
 
         runtime.reset();
 
@@ -286,18 +319,19 @@ public class MecanumLinearOpMode extends LinearOpMode{
             telemetry.update();
 
             deltaHeading = getYaw() - targetAngleChange;
-            power = Range.clip(deltaHeading/origDiff, 0.2, 1);
+            power = Range.clip(0.4 * deltaHeading/origDiff, 0.2, 1);
 
+            //power = 0.5;
             if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) {
+                LF.setPower(power);
+                LB.setPower(power);
+                RF.setPower(-power);
+                RB.setPower(-power);
+            } else {
                 LF.setPower(-power);
                 LB.setPower(-power);
                 RF.setPower(power);
                 RB.setPower(power);
-            } else {
-                LF.setPower(power);
-                LB.setPower(power);
-                RF.setPower(-power);
-                RF.setPower(-power);
             }
             /*
              * Turn left if the difference from where we're heading to where we want to head
@@ -383,15 +417,14 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     public void pushGoldEm(int goldpos) throws InterruptedException {
-        // double angleOff = 0;
-        // double power = 0.3;
         double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
         telemetry.update();
         switch (goldpos){
             case 1:
-                rotate(0.3, 35, true, 4); //WAS 27
+                //rotate(0.3, 35, true, 4); //WAS 27
+                rotate( -35, 4);
                 x = 15;
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
@@ -401,25 +434,22 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
             case 2:
                 x = 20;
-                //strafeDistance(0.5, 3, true);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(0.3, 5.5);
-                //   angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
-                //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
                 break;
 
             case 3:
                 x = 27;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 30, false, 4);
+                //rotate(0.3, 30, false, 4);
+                rotate(30,4);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(0.3, 5.5);
-                // angleOff = getYaw(); //UPDATE ANGLE
                 disableDetector();
                 break;
         }
@@ -428,15 +458,14 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     public double pushGold(int goldpos, boolean crater) throws InterruptedException {
-       // double angleOff = 0;
-       // double power = 0.3;
         double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
         telemetry.update();
         switch (goldpos){
             case 1:
-                rotate(0.3, 35, true, 4); //WAS 27
+                //rotate(0.3, 35, true, 4); //WAS 27
+                rotate(-35,4);
                 x = 15;
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
@@ -444,9 +473,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 driveDistance(0.3, 5);
                 disableDetector();
                 if (crater)
-                    rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
+                    //rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
+                    rotate(60, 4);
                 else
-                    rotate(0.3, 55, true,5);   //ROTATE TOWARD WALL
+                    //rotate(0.3, 55, true,5);   //ROTATE TOWARD WALL
+                    rotate(-60, 4);
                 break;
             case 2:
                 x = 20;
@@ -459,15 +490,18 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
                 if (crater)
-                    rotate(0.3, 90, false,5);   //ROTATE TOWARD WALL
+                    //rotate(0.3, 90, false,5);   //ROTATE TOWARD WALL
+                    rotate(90, 5);
                 else
-                    rotate(0.3, 90, true, 5);   //ROTATE TOWARD WALL
+                    //rotate(0.3, 90, true, 5);   //ROTATE TOWARD WALL
+                    rotate(-90, 5);
                 break;
 
             case 3:
                 x = 27;
                 strafeDistance(0.5, 7, true);
-                rotate(0.3, 35, false, 4);
+                //rotate(0.3, 35, false, 4);
+                rotate(35,4);
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -477,9 +511,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
                 //rotate(0.3, 180, false, 3);
                 if (crater)
-                    rotate(0.3, 55, false,5);   //ROTATE TOWARD WALL
+                   // rotate(0.3, 55, false,5);   //ROTATE TOWARD WALL
+                    rotate(55,5 );
                 else
-                    rotate(0.3, 125, true, 5);   //ROTATE TOWARD WALL
+                    //rotate(0.3, 125, true, 5);   //ROTATE TOWARD WALL
+                    rotate(-55,5);
                 break;
         }
         sleep(1000);
@@ -525,15 +561,13 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }**/
 //
     public void unlatch() throws InterruptedException {
-        //lift.setPower(0.5);    //LIFT PULLS ROBOT UP (releases tension for easy unlock)
         lock.setPosition(1);    //UNLOCK LIFT
         sleep(1000);
         lock.setPosition(0.51);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
         sleep(1250);
-        //lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-4000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-3500; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }

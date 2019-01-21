@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.AutoLinearOpMode;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 
-@Autonomous(name="TestTurn", group = "Sensor")
+@Autonomous(name="GyroTurn", group = "Sensor")
 
 //@Disabled
 
@@ -22,7 +22,8 @@ public class GyroTest extends MecanumLinearOpMode {
 
         waitForStart();
 
-        rotate(0.2, 90, true, 5);
+        rotate(0.2, 90, true, 10);
+        rotate(0.2, -90, true, 10);
 
         telemetry.addData("Status", "done");
         telemetry.update();

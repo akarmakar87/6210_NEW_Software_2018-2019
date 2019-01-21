@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
+import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
 @TeleOp(name="MainTeleOp", group="teleop")
 //@Disabled
@@ -13,7 +14,7 @@ public class MainTeleOp extends MecanumLinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        init(hardwareMap, false);
+        telemetry.addData("Init angle: " , init(hardwareMap, true));
 
         double leftPower = 0, rightPower = 0, scale = 1;
 
@@ -33,19 +34,19 @@ public class MainTeleOp extends MecanumLinearOpMode {
 
             //left motor
             if(Math.abs(gamepad1.left_stick_y) > 0.05){
-                rightPower = -gamepad1.left_stick_y * scale;
+                rightPower = gamepad1.left_stick_y;
             }else{
                 rightPower = 0;
             }
             //right motor
             if(Math.abs(gamepad1.right_stick_y) > 0.05){
-                leftPower = -gamepad1.right_stick_y * scale;
+                leftPower = gamepad1.right_stick_y;
             }else{
                 leftPower = 0;
             }
 //h
             //halfspeed
-            if (gamepad1.right_trigger > 0.5 || gamepad2.right_trigger > 0.5) {
+            if (gamepad1.right_trigger > 0.5) {
                 halfSpeed = true;
                 leftPower = leftPower / 2;
                 rightPower = rightPower / 2;
@@ -62,6 +63,21 @@ public class MainTeleOp extends MecanumLinearOpMode {
                 lift.setPower(0);
             }
 
+            if (Math.abs(gamepad2.right_stick_y) > 0.05) {
+                intakeL.setPower(gamepad2.right_stick_y);
+                intakeR.setPower(gamepad2.right_stick_y);
+            }else{
+                intakeL.setPower(0);
+                intakeR.setPower(0);
+            }
+
+
+            if (gamepad2.right_trigger > 0.5) {
+                spinner.setPower(gamepad2.right_trigger);
+            }else if (gamepad2.left_trigger > 0.5){
+                spinner.setPower(-gamepad2.left_trigger);
+            }
+
             //Marker Deployment
             if (gamepad2.x) {
                 marker.setPosition(0.41); //Bring Marker Up
@@ -75,23 +91,20 @@ public class MainTeleOp extends MecanumLinearOpMode {
             }
 
             //Strafe Controls
-            if (gamepad1.left_bumper){ //Strafe right
-                LF.setPower(-1);
-                RF.setPower(1);
-                LB.setPower(1);
-                RB.setPower(-1);
-            }else if(gamepad1.right_bumper){ //Strafe left
-                    LF.setPower(1);
-                    RF.setPower(-1);
-                    LB.setPower(-1);
-                    RB.setPower(1);
+            while (gamepad1.left_bumper){ //Strafe right - inverted
+                setStrafePowers(1,true);
             }
+            while (gamepad1.right_bumper){ //Strafe left - inverted
+                setStrafePowers(1,false);
+            }
+
             setMotorPowers(leftPower, rightPower);
 
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower)
                     .addData("Half Speed", halfSpeed)
                     .addData("lock pos: ", lock.getPosition())
-                    .addData("Lift pos", lift.getCurrentPosition());
+                    .addData("Lift pos", lift.getCurrentPosition())
+                    .addData("angle: ", getYaw());
             telemetry.update();
         }
     }
