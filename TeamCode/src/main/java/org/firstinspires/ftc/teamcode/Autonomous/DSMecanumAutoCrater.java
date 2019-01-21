@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
+import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
 @Autonomous(name="DSMecanumAutoCrater", group = "auto")
 @Disabled
-public class DSMecanumAutoCrater extends MecanumLinearOpMode {
+public class DSMecanumAutoCrater extends OldMecanumLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {

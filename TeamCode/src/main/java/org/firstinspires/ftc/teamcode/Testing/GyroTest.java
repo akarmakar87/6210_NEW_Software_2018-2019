@@ -22,8 +22,8 @@ public class GyroTest extends MecanumLinearOpMode {
 
         waitForStart();
 
-        rotate(0.2, 90, true, 10);
-        rotate(0.2, -90, true, 10);
+        rotate(0.2, 90);
+        rotate(0.2, -90);
 
         telemetry.addData("Status", "done");
         telemetry.update();

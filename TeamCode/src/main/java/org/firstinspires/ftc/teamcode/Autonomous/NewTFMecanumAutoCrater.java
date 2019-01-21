@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
-@Autonomous(name="TFMecanumAutoCrater", group = "auto")
+@Autonomous(name="NewTFMecanumAutoCrater", group = "auto")
 //@Disabled
 public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 

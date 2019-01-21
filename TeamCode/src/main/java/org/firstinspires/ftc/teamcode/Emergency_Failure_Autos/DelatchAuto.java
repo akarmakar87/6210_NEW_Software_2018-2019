@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
-@Autonomous(name="DelatchAuto", group = "auto")
+@Autonomous(name="Delatch", group = "auto")
 //@Disabled
 public class DelatchAuto extends MecanumLinearOpMode {
 
@@ -14,6 +14,21 @@ public class DelatchAuto extends MecanumLinearOpMode {
 
         init(hardwareMap, true);
 
+        // Set up detector
+        initVuforia();
+        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initTfod();
+        } else {
+            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
+
+        telemetry.addData("Mode", "setting up detector...");
+        telemetry.update();
+
+        telemetry.addData("detector", "enabled");
+        telemetry.update();
+
+        double dist = 0;
         waitForStart();
 
         unlatch();

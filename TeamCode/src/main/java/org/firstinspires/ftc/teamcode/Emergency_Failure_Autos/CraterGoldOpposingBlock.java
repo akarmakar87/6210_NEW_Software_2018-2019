@@ -1,17 +1,20 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
-
+package org.firstinspires.ftc.teamcode.Emergency_Failure_Autos;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
+import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
-@Autonomous(name="NewTFMecanumAutoDepot", group = "auto")
+@Autonomous(name="CraterGoldEnemyBlock", group = "auto")
 //@Disabled
-public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
+public class CraterGoldOpposingBlock extends OldMecanumLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
 
+        double offset = 0;
         init(hardwareMap, true);
 
         // Set up detector
@@ -30,7 +33,7 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
 
         double dist = 0;
         waitForStart();
-//
+//      offset =
         unlatch();
 
         //START DETECTION
@@ -43,23 +46,10 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
         telemetry.update();
         driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold,false);
+        dist = pushGold(gold,true);
 
-        driveDistance(-0.5, dist-10); //MOVE TOWARD WALL
-        sleep(500);
-        rotate(15, 2);
-        driveTime(-0.3, 2);
-        sleep(500);
-        driveTime(0.3, .25);
-        strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
-        marker.setPosition(0.41);   //DEPLOY MARKER
-        sleep(500);
-        driveTime(-0.3, 1);
-        strafeDistance(0.8, 55,false); //STRAFE INTO CRATER
-        driveTime(-0.3, 1);
-        strafeDistance(0.8, 20,false); //STRAFE INTO CRATER
-        marker.setPosition(0.3);    //RETRACT MARKER DEPLOYMENT*/
-        telemetry.addData("Status ", " auto done");
-    }
-}
-
+        driveDistance(1, 30);
+        rotate(1, 10, true, 2);
+        driveTime(1,1);
+        strafeDistance(1, 10, true);
+    }}
