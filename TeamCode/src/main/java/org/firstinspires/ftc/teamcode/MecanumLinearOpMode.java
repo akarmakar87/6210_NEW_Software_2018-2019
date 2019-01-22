@@ -250,15 +250,15 @@ public class MecanumLinearOpMode extends LinearOpMode{
         resetEncoders();
         while (getEncoderAvg() < distance * 55 && !isStopRequested()){
             if (right){
-                LF.setPower(-power);
-                RF.setPower(power);
-                LB.setPower(power);
-                RB.setPower(-power);
-            }else {
                 LF.setPower(power);
                 RF.setPower(-power);
                 LB.setPower(-power);
                 RB.setPower(power);
+            }else {
+                LF.setPower(-power);
+                RF.setPower(power);
+                LB.setPower(power);
+                RB.setPower(-power);
             }
         }
         stopMotors();
@@ -457,7 +457,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HER
     }
 
-    public double pushGold(int goldpos, boolean crater) throws InterruptedException {
+    public double pushGold(int goldpos, boolean crater, double offset) throws InterruptedException {
         double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
@@ -465,101 +465,42 @@ public class MecanumLinearOpMode extends LinearOpMode{
         switch (goldpos){
             case 1:
                 //rotate(0.3, 35, true, 4); //WAS 27
-                rotate(-35,4);
+                rotate(offset+35,4);
                 x = 15;
                 sleep(1000);
-                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5);
+                driveDistance(-0.3, 5);
                 disableDetector();
-                if (crater)
-                    //rotate(0.3, 120, false,5);   //ROTATE TOWARD WALL
-                    rotate(60, 4);
-                else
-                    //rotate(0.3, 55, true,5);   //ROTATE TOWARD WALL
-                    rotate(-60, 4);
                 break;
             case 2:
                 x = 20;
                 //strafeDistance(0.5, 3, true);
                 sleep(1000);
-                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5.5);
-             //   angleOff = getYaw(); //UPDATE ANGLE
+                driveDistance(-0.3, 5.5);
                 disableDetector();
                 //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
-                if (crater)
-                    //rotate(0.3, 90, false,5);   //ROTATE TOWARD WALL
-                    rotate(90, 5);
-                else
-                    //rotate(0.3, 90, true, 5);   //ROTATE TOWARD WALL
-                    rotate(-90, 5);
                 break;
-
             case 3:
                 x = 27;
-                strafeDistance(0.5, 7, true);
+                strafeDistance(-0.5, 7, true);
                 //rotate(0.3, 35, false, 4);
-                rotate(35,4);
+                rotate(offset+35,4);
                 sleep(1000);
-                driveDistance(-0.4, 9.5); //PUSH AND BACK UP
+                driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
-                driveDistance(0.3, 5.5);
-               // angleOff = getYaw(); //UPDATE ANGLE
+                driveDistance(-0.3, 5.5);
                 disableDetector();
-                //rotate(0.2, 90-angleOff, true, 5);   //ROTATE TOWARD WALL
-                //rotate(0.3, 180, false, 3);
-                if (crater)
-                   // rotate(0.3, 55, false,5);   //ROTATE TOWARD WALL
-                    rotate(55,5 );
-                else
-                    //rotate(0.3, 125, true, 5);   //ROTATE TOWARD WALL
-                    rotate(-55,5);
                 break;
         }
+        rotate(offset-90, 4);
         sleep(1000);
         //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HERE
         return x;
     }
 
- /**   public boolean checkAlign(){
-        boolean aligned = false;
-        activateDetector();
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions(); //MAKE LIST OF OBJECTS DETECTED
-            if (updatedRecognitions != null) { //IF LIST IS NOT NULL
-                telemetry.addData("# of Objects Detected", updatedRecognitions.size()); //GET # OF OBJECTS DETECTED
-                if (updatedRecognitions.size() > 0) { //IF DETECT BOTH OBJECTS
-                    int goldMineralX = -1;
-                    int silverMineral1X = -1;
-                    int silverMineral2X = -1;
-                    for (Recognition recognition : updatedRecognitions) {
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) { //IF OBJECT DETECTED IS GOLD
-                            goldMineralX = (int) recognition.getLeft();
-                        } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
-                        } else {
-                            silverMineral2X = (int) recognition.getLeft();
-                        }
-                    }
-
-                    if (goldMineralX > 500 && goldMineralX < 700) {
-                        telemetry.addData("Gold", "Aligned");
-                        aligned = true;
-                    }else{
-                        telemetry.addData("Gold", "Not Aligned");
-                        aligned = false;
-                    }
-                    telemetry.addData("Gold x pos ", goldMineralX);
-                }
-                telemetry.update();
-
-        }
-
-        telemetry.update();
-        return aligned;
-    }**/
-//
     public void unlatch() throws InterruptedException {
         lock.setPosition(1);    //UNLOCK LIFT
         sleep(1000);
@@ -567,7 +508,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
         sleep(1250);
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-3500; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
+        int liftTarget = lift.getCurrentPosition()-1000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
@@ -575,7 +516,8 @@ public class MecanumLinearOpMode extends LinearOpMode{
         lift.setPower(0);
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
-        strafeDistance(-0.75, 3, true);
+        strafeDistance(0.75, 4, false);
+        sleep(250);
     }
 
     public void setHook() throws InterruptedException {

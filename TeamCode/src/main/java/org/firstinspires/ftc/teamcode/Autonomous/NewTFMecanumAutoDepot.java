@@ -12,6 +12,8 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        double offset = 45;
+
         init(hardwareMap, true);
 
         // Set up detector
@@ -30,8 +32,8 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
 
         double dist = 0;
         waitForStart();
-//
         unlatch();
+        rotate( offset,3);
 
         //START DETECTION
 
@@ -41,11 +43,11 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
-        driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
+        driveDistance(0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold,false);
+        dist = pushGold(gold,true, offset);
 
-        driveDistance(-0.5, dist-10); //MOVE TOWARD WALL
+        driveDistance(0.5, dist-10); //MOVE TOWARD WALL
         sleep(500);
         rotate(15, 2);
         driveTime(-0.3, 2);

@@ -528,7 +528,7 @@ public class OldMecanumLinearOpMode extends LinearOpMode{
         sleep(1250);
         //lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-3500; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
+        int liftTarget = lift.getCurrentPosition()-300; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
@@ -536,7 +536,8 @@ public class OldMecanumLinearOpMode extends LinearOpMode{
         lift.setPower(0);
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
-        strafeDistance(-0.75, 3, true);
+        strafeDistance(0.75, 4, false);
+        sleep(250);
     }
 
     public void setHook() throws InterruptedException {
