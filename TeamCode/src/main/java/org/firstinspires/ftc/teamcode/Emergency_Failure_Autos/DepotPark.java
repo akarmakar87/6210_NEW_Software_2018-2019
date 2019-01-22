@@ -35,5 +35,14 @@ public class DepotPark extends MecanumLinearOpMode {
         unlatch();
         driveDistance(1, 10 );
         rotate(90, 1);
-        //driveDistance();  MORE TO DO!!!
+        driveDistance(1, 25);
+        rotate(-45, 1);
+        driveTime(1, 2);
+        driveTime(-1, 0.25);
+        strafeDistance(1, 40, true);
+        marker.setPosition(0.41);
+        strafeDistance(1, 55, false);
+        driveTime(1, 1);
+        strafeDistance(1, 25, false);
+        marker.setPosition(0.3);
     }}
