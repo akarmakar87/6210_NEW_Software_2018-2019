@@ -53,10 +53,10 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 
         driveDistance(-0.5, dist); //MOVE TOWARD WALL
         sleep(500);
-        rotate(-90, 5);
-        driveTime(-0.3, 1);
+        rotate(-90, 5); //TURN TOWARD WALL
+        driveTime(-0.3, 1); //ALIGN WITH WALL
         sleep(500);
-        driveTime(0.3, .25);
+        driveTime(0.3, .25);    //MOVE BACK FROM WALL
         strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(1000);
