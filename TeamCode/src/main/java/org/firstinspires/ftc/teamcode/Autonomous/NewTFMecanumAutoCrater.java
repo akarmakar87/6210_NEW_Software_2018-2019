@@ -19,7 +19,8 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 
         init(hardwareMap, true);
 
-        // Set up detector
+        // SET UP DETECTOR
+
         initVuforia();
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
@@ -36,11 +37,11 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         double dist = 0;
         waitForStart();
         unlatch();
-        rotate( offset,3);
+
 
         //START DETECTION
 
-        findGold(2); //GET GOLD POSITION
+        findGold(2.5); //GET GOLD POSITION
         tfod.deactivate();
         int gold = retPos();
         sleep(1000);

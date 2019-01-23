@@ -127,15 +127,15 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
     public void setStrafePowers(double power, boolean right){
         if (right){
-            LF.setPower(Range.clip(power, -1, 1));
-            RF.setPower(-Range.clip(power, -1, 1));
-            LB.setPower(-Range.clip(power, -1, 1));
-            RB.setPower(Range.clip(power, -1, 1));
-        }else{
             LF.setPower(-Range.clip(power, -1, 1));
             RF.setPower(Range.clip(power, -1, 1));
             LB.setPower(Range.clip(power, -1, 1));
             RB.setPower(-Range.clip(power, -1, 1));
+        }else{
+            LF.setPower(Range.clip(power, -1, 1));
+            RF.setPower(-Range.clip(power, -1, 1));
+            LB.setPower(-Range.clip(power, -1, 1));
+            RB.setPower(Range.clip(power, -1, 1));
         }
 
     }
@@ -144,25 +144,17 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
         double deltaHeading = 0;
 
-        power = Range.clip(0.4 * deltaHeading, 0.2, 1);
-
         resetEncoders();
         while (getEncoderAvg() < distance * 55 && !isStopRequested()) {
-
            deltaHeading = getYaw();
            power = Range.clip(deltaHeading/0.5, 0.2, 1);
 
-           if (right) {
-               LF.setPower(-power);
-               RF.setPower(power);
-               LB.setPower(power);
-               RB.setPower(-power);
-           } else {
-               LF.setPower(power);
-               RF.setPower(-power);
-               LB.setPower(-power);
-               RB.setPower(power);
+           if (Math.abs(getYaw()-90) > 5){
+               driveTime(1,0.5);
+           }else{
+               setStrafePowers(power,right);
            }
+
         }
     }
 
@@ -264,44 +256,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
         stopMotors();
     }
 
-
-    //UPDATE ANGLE
-
     //GET ANGLE
     public double getYaw() {
         angles = imu.getAngularOrientation();
         return angles.firstAngle;
     }
-
-    //ROTATE USING GYRO
-   /** public void rotateP(double targetAngleChange, boolean turnRight, int timeout) {
-
-        runtime.reset();
-
-        double initAngle = getYaw();
-        telemetry.addData("Initial Angle", initAngle);
-        telemetry.update();
-
-        double currAngleChange = getYaw() - initAngle;
-        telemetry.addData("CurrAngleChange", currAngleChange);
-        telemetry.update();
-
-        while ((Math.abs(getYaw() - initAngle) < targetAngleChange) && opModeIsActive() && (runtime.seconds() < timeout)) {
-            currAngleChange = getYaw() - initAngle;
-            double kP = .5/90;
-            double power = .1 + currAngleChange * kP;
-            if (turnRight){
-                setMotorPowers(power,-power);
-            }else {
-                setMotorPowers(-power, power);
-            }
-
-            telemetry.addData("Angle left", targetAngleChange - currAngleChange);
-            telemetry.update();
-
-        }
-        stopMotors();
-    }**/
 
 
     //ROTATE USING GYRO
@@ -321,7 +280,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
             deltaHeading = getYaw() - targetAngleChange;
             power = Range.clip(0.4 * deltaHeading/origDiff, 0.2, 1);
 
-            //power = 0.5;
             if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) {
                 LF.setPower(power);
                 LB.setPower(power);
@@ -417,15 +375,12 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     public void pushGoldEm(int goldpos) throws InterruptedException {
-        double x = 0;
         resetTime();
         telemetry.addData("gold is ", goldpos);
         telemetry.update();
         switch (goldpos){
             case 1:
-                //rotate(0.3, 35, true, 4); //WAS 27
                 rotate( -35, 4);
-                x = 15;
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -433,7 +388,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 disableDetector();
                 break;
             case 2:
-                x = 20;
                 sleep(1000);
                 driveDistance(-0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -442,7 +396,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
 
             case 3:
-                x = 27;
                 strafeDistance(0.5, 7, true);
                 //rotate(0.3, 30, false, 4);
                 rotate(30,4);
@@ -454,7 +407,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
         }
         sleep(1000);
-        //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HER
     }
 
     public double pushGold(int goldpos, boolean crater, double offset) throws InterruptedException {
@@ -464,9 +416,8 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.update();
         switch (goldpos){
             case 1:
-                //rotate(0.3, 35, true, 4); //WAS 27
                 rotate(offset+35,4);
-                x = 15;
+                x = 10; //WAS 15
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -475,19 +426,16 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 break;
             case 2:
                 x = 20;
-                //strafeDistance(0.5, 3, true);
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
                 driveDistance(-0.3, 5.5);
                 disableDetector();
-                //rotate(0.2, 90 - angleOff, false, 5);   //ROTATE TOWARD WALL
                 break;
             case 3:
                 x = 27;
-                strafeDistance(-0.5, 7, true);
-                //rotate(0.3, 35, false, 4);
-                rotate(offset+35,4);
+                strafeDistance(0.5, 7, true);
+                rotate(offset-35,4);
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 sleep(1000);
@@ -495,14 +443,16 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 disableDetector();
                 break;
         }
-        rotate(offset-90, 4);
+        if (crater)
+            rotate(offset-90, 4);
+        else
+            rotate(offset+90, 4);
         sleep(1000);
-        //IN ORDER TO FIX CHECKALIGN() ISSUE WITH DETECTOR NOT BEING DISABLED, TRY PUTTING A DEACTIVATE COMMAND HERE
         return x;
     }
 
     public void unlatch() throws InterruptedException {
-        lock.setPosition(1);    //UNLOCK LIFT
+       /** lock.setPosition(1);    //UNLOCK LIFT
         sleep(1000);
         lock.setPosition(0.51);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
@@ -517,6 +467,33 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
         strafeDistance(0.75, 4, false);
+        sleep(250);
+        driveDistance(0.3, 2);
+        sleep(250);
+        telemetry.addData("original", getYaw());
+        telemetry.update();
+        rotate(45,3);
+        telemetry.addData("after", getYaw());
+        telemetry.update();
+        sleep(250);**/
+
+        lock.setPosition(1);    //UNLOCK LIFT
+        sleep(1000);
+        lock.setPosition(0.51);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
+        sleep(1250);
+        //lock.setPosition(0);    //Stop lock movement
+        sleep(750);
+        int liftTarget = lift.getCurrentPosition()-300; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
+        while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
+            lift.setPower(-1);
+        }
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setPower(0);
+        sleep(250);
+        //MOVE A BIT TO TRIGGER CAMERA VIEWING
+        strafeDistance(0.75, 4, false); //CHANGE to 5 to FIX SAMPLING
+        rotate(45,3);
         sleep(250);
     }
 

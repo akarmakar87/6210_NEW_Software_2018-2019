@@ -33,11 +33,10 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
         double dist = 0;
         waitForStart();
         unlatch();
-        rotate( offset,3);
 
         //START DETECTION
 
-        findGold(2); //GET GOLD POSITION
+        findGold(2.5); //GET GOLD POSITION
         tfod.deactivate();
         int gold = retPos();
         sleep(1000);
@@ -47,7 +46,7 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
 
         dist = pushGold(gold,true, offset);
 
-        driveDistance(0.5, dist-10); //MOVE TOWARD WALL
+        driveDistance(0.5, -dist); //MOVE TOWARD WALL
         sleep(500);
         rotate(15, 2);
         driveTime(-0.3, 2);

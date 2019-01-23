@@ -42,7 +42,7 @@ public class CraterGoldPark extends MecanumLinearOpMode {
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
-        driveDistance(-0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
+        driveDistance(0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
         pushGoldEm(gold);
 
