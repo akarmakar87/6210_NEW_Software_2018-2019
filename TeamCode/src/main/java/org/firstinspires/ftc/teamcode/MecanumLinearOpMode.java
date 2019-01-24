@@ -282,7 +282,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
             deltaHeading = getYaw() - targetAngleChange; //GET ANGLE LEFT UNTIL TARGET ANGLE
             power = Range.clip(0.4 * deltaHeading/origDiff, 0.2, 1); //PROPORTIONAL SPEED
-
+            /** Why is dHeading/oDiff multiplied by 0.4? -Garrett **/
             if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) { //LEFT IS + , RIGHT IS -
                 LF.setPower(power);
                 LB.setPower(power);
@@ -477,9 +477,9 @@ public class MecanumLinearOpMode extends LinearOpMode{
 
         lock.setPosition(1);    //UNLOCK LIFT
         sleep(1000);
-        lock.setPosition(0.51);
+        lock.setPosition(0.51); //Stop lock movement
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
-        sleep(1250);
+        sleep(1250);        /** We can speed up the auto by powering down the whole time instead of wasting time letting gravity do it **/
         //lock.setPosition(0);    //Stop lock movement
         sleep(750);
         int liftTarget = lift.getCurrentPosition()-250; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
