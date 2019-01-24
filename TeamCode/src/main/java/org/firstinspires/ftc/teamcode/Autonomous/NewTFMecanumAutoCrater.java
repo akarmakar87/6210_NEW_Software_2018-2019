@@ -24,8 +24,6 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         initVuforia();
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
-        } else {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 
         telemetry.addData("Mode", "setting up detector...");
@@ -42,14 +40,13 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         //START DETECTION
 
         findGold(2.5); //GET GOLD POSITION
-        tfod.deactivate();
         int gold = retPos();
         sleep(1000);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
         driveDistance(0.3,4); //MOVE FORWARD OUT OF LANDER ZONE
 
-        dist = pushGold(gold,true, offset);
+        dist = pushGold(gold,true, offset); //
 
         driveDistance(-0.5, dist); //MOVE TOWARD WALL
         sleep(500);
@@ -57,7 +54,11 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         driveTime(-0.3, 1); //ALIGN WITH WALL
         sleep(500);
         driveTime(0.3, .25);    //MOVE BACK FROM WALL
-        strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
+        if (getRange() < 100){
+            markerMove();
+        }else{
+            strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
+        }
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(1000);
         strafeDistance(0.8, 72,false); //STRAFE INTO CRATER

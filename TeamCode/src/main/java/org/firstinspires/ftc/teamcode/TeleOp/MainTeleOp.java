@@ -14,16 +14,13 @@ public class MainTeleOp extends MecanumLinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        telemetry.addData("Init angle: " , init(hardwareMap, true));
+        init(hardwareMap, true);
 
-        double leftPower = 0, rightPower = 0, scale = 1;
+        double leftPower = 0, rightPower = 0;
 
         boolean halfSpeed = false;
 
         boolean servoDown = false;
-        boolean locked = false;
-
-        double lockpos = 0;
 
         telemetry.addData("Mode: ", "Waiting for start");
         telemetry.update();
@@ -32,20 +29,20 @@ public class MainTeleOp extends MecanumLinearOpMode {
 
         while (opModeIsActive() && !isStopRequested()) {
 
-            //left motor
+            //RIGHT (ACTUALLY LEFT) MOTOR
             if(Math.abs(gamepad1.left_stick_y) > 0.05){
                 rightPower = gamepad1.left_stick_y;
             }else{
                 rightPower = 0;
             }
-            //right motor
+            //LEFT (ACTUALLY RIGHT) MOTOR
             if(Math.abs(gamepad1.right_stick_y) > 0.05){
                 leftPower = gamepad1.right_stick_y;
             }else{
                 leftPower = 0;
             }
-//h
-            //halfspeed
+
+            //HALFSPEED
             if (gamepad1.right_trigger > 0.5) {
                 halfSpeed = true;
                 leftPower = leftPower / 2;
@@ -54,29 +51,15 @@ public class MainTeleOp extends MecanumLinearOpMode {
                 halfSpeed = false;
             }
 
-            //lift
+            //LIFT CONTROLS
             if (gamepad2.right_bumper) {
-                lift.setPower(1); //Lift Down
+                lift.setPower(1); //LIFT DOWN
             }else if(gamepad2.left_bumper){
-                lift.setPower(-1); //Lift Up
+                lift.setPower(-1); //LIFT UP
             }else{
                 lift.setPower(0);
             }
 
-            if (Math.abs(gamepad2.right_stick_y) > 0.05) {
-                intakeL.setPower(gamepad2.right_stick_y);
-                intakeR.setPower(gamepad2.right_stick_y);
-            }else{
-                intakeL.setPower(0);
-                intakeR.setPower(0);
-            }
-
-
-            if (gamepad2.right_trigger > 0.5) {
-                spinner.setPower(gamepad2.right_trigger);
-            }else if (gamepad2.left_trigger > 0.5){
-                spinner.setPower(-gamepad2.left_trigger);
-            }
 
             //Marker Deployment
             if (gamepad2.x) {
@@ -102,9 +85,7 @@ public class MainTeleOp extends MecanumLinearOpMode {
 
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower)
                     .addData("Half Speed", halfSpeed)
-                    .addData("lock pos: ", lock.getPosition())
-                    .addData("Lift pos", lift.getCurrentPosition())
-                    .addData("angle: ", getYaw());
+                    .addData("Lift pos", lift.getCurrentPosition());
             telemetry.update();
         }
     }

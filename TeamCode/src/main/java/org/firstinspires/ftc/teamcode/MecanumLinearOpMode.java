@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -38,6 +40,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public DcMotor lift;
     public Servo marker;
     public Servo lock;
+    DistanceSensor range;
 
     //gyro variables
     Orientation angles;
@@ -58,7 +61,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public TFObjectDetector tfod;
 
     // INITIALIZE
-    public double init(HardwareMap map, boolean auto){
+    public void init(HardwareMap map, boolean auto){
 
         runtime     = new ElapsedTime();
         LF  = map.dcMotor.get("LF");
@@ -69,6 +72,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         intakeL  = map.dcMotor.get("intakeL");
         intakeR  = map.dcMotor.get("intakeR");
         marker = map.servo.get("marker");
+        range     = map.get(DistanceSensor.class, "range");
         imu = map.get(BNO055IMU.class, "imu"); // Check which IMU is being used
 
         lift  = map.dcMotor.get("lift");
@@ -114,7 +118,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
         }
         telemetry.addData("Status: ", "Initialized");
         telemetry.update();
-        return getYaw();
     }
 
     //SET POWER TO DRIVE MOTORS
@@ -277,10 +280,10 @@ public class MecanumLinearOpMode extends LinearOpMode{
             telemetry.addData("Turning:", "From " + getYaw() + " to " + targetAngleChange);
             telemetry.update();
 
-            deltaHeading = getYaw() - targetAngleChange;
-            power = Range.clip(0.4 * deltaHeading/origDiff, 0.2, 1);
+            deltaHeading = getYaw() - targetAngleChange; //GET ANGLE LEFT UNTIL TARGET ANGLE
+            power = Range.clip(0.4 * deltaHeading/origDiff, 0.2, 1); //PROPORTIONAL SPEED
 
-            if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) {
+            if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) { //LEFT IS + , RIGHT IS -
                 LF.setPower(power);
                 LB.setPower(power);
                 RF.setPower(-power);
@@ -291,11 +294,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 RF.setPower(power);
                 RB.setPower(power);
             }
-            /*
-             * Turn left if the difference from where we're heading to where we want to head
-             * is smaller than -180 or is between 1 and 180.  All else (including the 0 and 180
-             * situations) turn right.
-             */
         }
         stopMotors();
     }
@@ -502,6 +500,19 @@ public class MecanumLinearOpMode extends LinearOpMode{
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
+    }
+
+    public void markerMove() throws InterruptedException{
+        resetTime();
+        while (range.getDistance(DistanceUnit.INCH) > 7 && runtime.seconds() < 5 && !isStopRequested() && opModeIsActive()){
+            setStrafePowers(1, true);
+            telemetry.addData("Inches left", range.getDistance(DistanceUnit.INCH));
+            telemetry.update();
+        }
+    }
+
+    public double getRange(){
+        return range.getDistance(DistanceUnit.INCH);
     }
 
     public void initVuforia() {
