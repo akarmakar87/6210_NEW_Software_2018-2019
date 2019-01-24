@@ -73,6 +73,17 @@ public class MainTeleOp extends MecanumLinearOpMode {
                 setHook();
             }
 
+            //LOCK CONTROLS
+            while(gamepad2.dpad_right){    //LOCK
+                lock.setPosition(-1);
+            }
+            while(gamepad2.dpad_left){   //UNLOCK
+                lock.setPosition(1);
+            }
+            while(gamepad2.dpad_down){   //STAY STILL
+                lock.setPosition(0.51);
+            }
+
             //Strafe Controls
             while (gamepad1.left_bumper){ //Strafe right - inverted
                 setStrafePowers(-1,true);
