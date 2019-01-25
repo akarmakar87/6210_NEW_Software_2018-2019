@@ -150,7 +150,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         resetEncoders();
         while (getEncoderAvg() < distance * 55 && !isStopRequested()) {
            deltaHeading = getYaw();
-           power = Range.clip(deltaHeading/0.5, 0.2, 1);
+           power = Range.clip(deltaHeading/0.5, 0.25, 1);
 
            if (Math.abs(getYaw()-90) > 5){
                driveTime(1,0.5);

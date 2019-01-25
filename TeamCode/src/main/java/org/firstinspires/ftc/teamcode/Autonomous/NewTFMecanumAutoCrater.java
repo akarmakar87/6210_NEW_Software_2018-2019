@@ -48,7 +48,7 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 
         dist = pushGold(gold,true, offset); //
 
-        driveDistance(-0.7, dist); //MOVE TOWARD WALL
+        driveDistance(-0.7, getRange()); //MOVE TOWARD WALL
         sleep(250);
         rotate(-90, 3); //TURN TOWARD WALL
         driveTime(-0.3, 1); //ALIGN WITH WALL
@@ -57,11 +57,11 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         rotate(-180, 3); //TURN TOWARD DEPOT
         driveDistance(0.7, 25);   //DRIVE INTO DEPOT
         rotate(-90, 3); //TURN TO DEPLOY MARKER
-        /*if (getRange() < 100){
+        if (getRange() < 50){
             markerMove();
         }else{
             strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
-        }*/
+        }
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(500);
         strafeDistance(1, 72,false); //STRAFE INTO CRATER (VALUE FOR DISTANCE IS 72)
