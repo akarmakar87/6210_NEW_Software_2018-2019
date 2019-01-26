@@ -418,17 +418,12 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 x = 10; //WAS 15
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
-                sleep(1000);
-                driveDistance(-0.3, 5);
-                disableDetector();
                 break;
             case 2:
                 x = 20;
                 sleep(1000);
+                strafeDistance(1, 2, true);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
-                sleep(1000);
-                driveDistance(-0.3, 5.5);
-                disableDetector();
                 break;
             case 3:
                 x = 27;
@@ -436,11 +431,11 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 rotate(offset-35,4);
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
-                sleep(1000);
-                driveDistance(-0.3, 5.5);
-                disableDetector();
                 break;
         }
+        sleep(1000);
+        driveDistance(-0.3, 7);
+        disableDetector();
         if (crater)
             rotate(offset-90, 4);
         else
@@ -491,7 +486,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
         strafeDistance(0.75, 5, false); //CHANGE to 5 to FIX SAMPLING
-        rotate(45,3);
+        //rotate(45,3);
         sleep(250);
     }
 
