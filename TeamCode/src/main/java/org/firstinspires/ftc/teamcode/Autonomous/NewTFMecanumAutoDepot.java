@@ -36,7 +36,7 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
 
         //START DETECTION
 
-        findGold(2.5); //GET GOLD POSITION
+        findGold(2); //GET GOLD POSITION
         tfod.deactivate();
         int gold = retPos();
         sleep(1000);

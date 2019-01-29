@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.AutoLinearOpMode;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @TeleOp(name = "BoxServoTest", group = "Sensor")
-@Disabled
+//@Disabled
 public class BoxServoTest extends MecanumLinearOpMode {
 
     @Override
