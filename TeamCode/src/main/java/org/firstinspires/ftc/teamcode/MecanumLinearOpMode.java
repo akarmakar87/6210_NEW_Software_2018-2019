@@ -414,27 +414,27 @@ public class MecanumLinearOpMode extends LinearOpMode{
         telemetry.update();
         switch (goldpos){
             case 1:
-                rotate(offset+35,4);
-                x = 10; //WAS 15
+                rotate(offset+30,4);
+                x = 20; //WAS 15
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 break;
             case 2:
-                x = 20;
+                x = 25;
                 sleep(1000);
-                strafeDistance(1, 2, true);
+                strafeDistance(1, 3.5, true);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 break;
             case 3:
-                x = 27;
+                x = 30;
                 strafeDistance(0.5, 7, true);
-                rotate(offset-35,4);
+                rotate(offset-30,4);
                 sleep(1000);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 break;
         }
         sleep(1000);
-        driveDistance(-0.3, 7);
+        driveDistance(-0.3, 4);
         disableDetector();
         if (crater)
             rotate(offset-90, 4);
@@ -445,30 +445,6 @@ public class MecanumLinearOpMode extends LinearOpMode{
     }
 
     public void unlatch() throws InterruptedException {
-       /** lock.setPosition(1);    //UNLOCK LIFT
-        sleep(1000);
-        lock.setPosition(0.51);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT); //LET GRAVITY TAKE THE ROBOT DOWN
-        sleep(1250);
-        sleep(750);
-        int liftTarget = lift.getCurrentPosition()-1000; //FIND HOW FAR THE LIFT NEEDS TO RETRACT
-        while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
-            lift.setPower(-1);
-        }
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lift.setPower(0);
-        sleep(250);
-        //MOVE A BIT TO TRIGGER CAMERA VIEWING
-        strafeDistance(0.75, 4, false);
-        sleep(250);
-        driveDistance(0.3, 2);
-        sleep(250);
-        telemetry.addData("original", getYaw());
-        telemetry.update();
-        rotate(45,3);
-        telemetry.addData("after", getYaw());
-        telemetry.update();
-        sleep(250);**/
 
         lock.setPosition(1);    //UNLOCK LIFT
         sleep(1000);

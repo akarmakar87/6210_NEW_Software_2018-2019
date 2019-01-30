@@ -39,37 +39,30 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
 
         //START DETECTION
 
-        findGold(2); //GET GOLD POSITION
+        driveDistance(0.7,2.5); //MOVE FORWARD OUT OF LANDER ZONE
+        rotate(46,3);
+        findGold(1.5); //GET GOLD POSITION
         int gold = retPos();
         sleep(500);
         telemetry.addData("Gold is at", gold);
         telemetry.update();
-        driveDistance(0.7,4); //MOVE FORWARD OUT OF LANDER ZONE
-        rotate(45,3);
 
         dist = pushGold(gold,true, offset); //
 
         driveDistance(-0.7, dist); //MOVE TOWARD WALL
         sleep(250);
         rotate(-90, 2); //TURN TOWARD WALL
-        driveTime(-0.3, 0.35); //ALIGN WITH WALL
+        driveTime(-0.3, 0.75); //ALIGN WITH WALL
         sleep(250);
         driveTime(0.3, 0.25);    //MOVE BACK FROM WALL (COULD GET RID OF THIS BECAUSE THE TURN WILL PUSH US OFF THE WALL
         strafeDistance(1, 30, true);
-        //rotate(-180, 2); //TURN TOWARD DEPOT
-        //driveDistance(0.7, 25);   //DRIVE INTO DEPOT
-        //markerMove();
-        //rotate(-90, 2); //TURN TO DEPLOY MARKER
-        /*if (getRange() < 50){
-            markerMove();
-        }else{
-            strafeDistance(0.8, 40,true);   //STRAFE TOWARD DEPOT
-        }*/
         marker.setPosition(0.41);   //DEPLOY MARKER
         sleep(500);
-        driveTime(-0.3, 0.25);    //MOVE TOWARD WALL
+        driveTime(-0.3, 0.5);    //MOVE TOWARD WALL
         driveTime(.1,0.25);     // BACK UP FROM WALL
-        strafeDistance(1, 72,false); //STRAFE INTO CRATER (VALUE FOR DISTANCE IS 72)
+        strafeDistance(1, 52,false); //STRAFE INTO CRATER (VALUE FOR DISTANCE IS 72)
+        driveTime(-0.3, 0.5);    //MOVE TOWARD WALL
+        strafeDistance(1, 20,false);
         marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT
         telemetry.addData("Status ", " auto done");
     }
