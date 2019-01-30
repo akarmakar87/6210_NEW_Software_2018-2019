@@ -298,6 +298,38 @@ public class MecanumLinearOpMode extends LinearOpMode{
         stopMotors();
     }
 
+    public void rotateS(double targetAngleChange, int timeout) {
+
+        runtime.reset();
+
+        double power = 0;
+        double origDiff = getYaw() - targetAngleChange;
+        double deltaHeading = 0;
+
+        while ((Math.abs(getYaw()-targetAngleChange) > 0.5) && opModeIsActive() && (runtime.seconds() < timeout)) {
+
+            telemetry.addData("Turning:", "From " + getYaw() + " to " + targetAngleChange);
+            telemetry.update();
+
+            deltaHeading = getYaw() - targetAngleChange; //GET ANGLE LEFT UNTIL TARGET ANGLE
+            //power = Range.clip(0.3 * deltaHeading/origDiff, 0.2, 1); //PROPORTIONAL SPEED
+            power = 0.2;
+            /** Why is dHeading/oDiff multiplied by 0.4? -Garrett **/
+            if (deltaHeading < -180 || (deltaHeading > 0 && deltaHeading < 180) ) { //LEFT IS + , RIGHT IS -
+                LF.setPower(power);
+                LB.setPower(power);
+                RF.setPower(-power);
+                RB.setPower(-power);
+            } else {
+                LF.setPower(-power);
+                LB.setPower(-power);
+                RF.setPower(power);
+                RB.setPower(power);
+            }
+        }
+        stopMotors();
+    }
+
     //GOLD SAMPLING
 
     int pos = 2;
@@ -422,7 +454,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
             case 2:
                 x = 25;
                 sleep(1000);
-                strafeDistance(1, 3.5, true);
+                strafeDistance(1, 5.5, true);
                 driveDistance(0.4, 9.5); //PUSH AND BACK UP
                 break;
             case 3:
@@ -453,7 +485,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1250);        /** We can speed up the auto by powering down the whole time instead of wasting time letting gravity do it **/
         //lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-250; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
+        int liftTarget = lift.getCurrentPosition()-300; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
@@ -461,7 +493,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         lift.setPower(0);
         sleep(250);
         //MOVE A BIT TO TRIGGER CAMERA VIEWING
-        strafeDistance(0.75, 5, false); //CHANGE to 5 to FIX SAMPLING
+        strafeDistance(0.75, 6, false); //CHANGE to 5 to FIX SAMPLING
         //rotate(45,3);
         sleep(250);
     }
