@@ -35,13 +35,13 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         double dist = 0;
         waitForStart();
         unlatch();
+        rotateS(45,32);
+        findGold(1.5); //GET GOLD POSITION
 
 
         //START DETECTION
 
         driveDistance(0.7,2.5); //MOVE FORWARD OUT OF LANDER ZONE
-        rotate(46,3);
-        findGold(1.5); //GET GOLD POSITION
         int gold = retPos();
         sleep(500);
         telemetry.addData("Gold is at", gold);

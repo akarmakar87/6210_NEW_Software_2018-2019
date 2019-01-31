@@ -13,7 +13,6 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         double offset = 45;
-
         init(hardwareMap, true);
 
         // Set up detector
@@ -34,11 +33,11 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
         waitForStart();
         unlatch();
         rotateS(45,2);
+        findGold(1.5); //GET GOLD POSITION
 
         //START DETECTION
 
         driveDistance(0.7,2.5); //MOVE FORWARD OUT OF LANDER ZONE
-        findGold(1.5); //GET GOLD POSITION
         int gold = retPos();
         sleep(500);
         telemetry.addData("Gold is at", gold);
