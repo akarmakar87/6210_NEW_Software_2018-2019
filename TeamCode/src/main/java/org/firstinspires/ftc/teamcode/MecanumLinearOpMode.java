@@ -449,7 +449,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
                 rotate(offset+30,4);
                 x = 20; //WAS 15
                 sleep(1000);
-                driveDistance(0.4, 9.5); //PUSH AND BACK UP
+                driveDistance(0.4, 11); //PUSH AND BACK UP
                 break;
             case 2:
                 x = 25;
