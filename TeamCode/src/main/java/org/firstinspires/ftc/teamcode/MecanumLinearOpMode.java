@@ -485,7 +485,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
         sleep(1250);        /** We can speed up the auto by powering down the whole time instead of wasting time letting gravity do it **/
         //lock.setPosition(0);    //Stop lock movement
         sleep(750);
-        int liftTarget = lift.getCurrentPosition()-300; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
+        int liftTarget = lift.getCurrentPosition()-280; //FIND HOW FAR THE LIFT NEEDS TO RETRACT : ORIGINALLY 4000
         while (!isStopRequested() && lift.getCurrentPosition() > liftTarget){   //RETRACT LIFT
             lift.setPower(-1);
         }
