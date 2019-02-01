@@ -64,7 +64,7 @@ public class NewTFMecanumAutoDepot extends MecanumLinearOpMode {
         strafeDistance(1, 25,false);*/
         rotate(0, 2); //TURN TOWARD WALL
         strafeDistance(1, 7,false);
-        driveDistance(0.75, 35);
+        driveDistance(-0.75, 35);
         telemetry.addData("Status ", " auto done");
     }
 }
