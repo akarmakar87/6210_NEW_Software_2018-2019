@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
-@Autonomous(name="CraterGoldEnemyBlock", group = "auto")
+@Autonomous(name="CraterGoldEnemyBlock", group = "em")
 //@Disabled
 public class CraterGoldOpposingBlock extends OldMecanumLinearOpMode {
 
@@ -33,7 +33,6 @@ public class CraterGoldOpposingBlock extends OldMecanumLinearOpMode {
 
         double dist = 0;
         waitForStart();
-//      offset =
         unlatch();
 
         //START DETECTION

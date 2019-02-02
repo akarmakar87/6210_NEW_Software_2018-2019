@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
-@Autonomous(name="CraterGoldPark", group = "auto")
+@Autonomous(name="CraterGoldPark", group = "em")
 //@Disabled
 public class CraterGoldPark extends MecanumLinearOpMode {
 

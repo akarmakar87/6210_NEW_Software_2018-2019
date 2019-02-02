@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
-@Autonomous(name="DepotGold", group = "auto")
+@Autonomous(name="DepotGold", group = "em")
 //@Disabled
 public class DepotGold extends MecanumLinearOpMode {
 

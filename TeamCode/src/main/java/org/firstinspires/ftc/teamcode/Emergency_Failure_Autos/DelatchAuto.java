@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
-@Autonomous(name="Delatch", group = "auto")
+@Autonomous(name="Delatch", group = "em")
 //@Disabled
 public class DelatchAuto extends MecanumLinearOpMode {
 

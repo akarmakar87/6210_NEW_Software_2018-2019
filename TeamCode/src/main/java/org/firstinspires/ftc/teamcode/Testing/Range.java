@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @TeleOp (name = "RangeTest", group = "Sensor")
-//@Disabled
+@Disabled
 public class Range extends MecanumLinearOpMode{
 
     @Override

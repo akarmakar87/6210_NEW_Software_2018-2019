@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 
 @Autonomous(name="GyroTurn", group = "Sensor")
 
-//@Disabled
+@Disabled
 
 public class GyroTest extends MecanumLinearOpMode {
 

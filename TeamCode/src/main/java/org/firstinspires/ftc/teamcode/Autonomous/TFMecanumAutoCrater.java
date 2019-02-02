@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
@@ -9,7 +10,8 @@ import org.firstinspires.ftc.teamcode.MecanumLinearOpMode;
 import org.firstinspires.ftc.teamcode.OldMecanumLinearOpMode;
 
 @Autonomous(name="TFMecanumAutoCrater", group = "auto")
-//@Disabled
+@Disabled
+
 public class TFMecanumAutoCrater extends OldMecanumLinearOpMode {
 
     @Override
