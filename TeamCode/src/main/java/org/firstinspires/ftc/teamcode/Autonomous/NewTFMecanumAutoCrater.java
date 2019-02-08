@@ -53,7 +53,7 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         rotate(0, 2); //TURN TOWARD WALL
         strafeDistance(1,10,false);
         sleep(250);
-        driveDistance(-0.75, 23); //MOVE TOWARD WALL
+        driveDistance(-0.75, 15); //MOVE TOWARD WALL
         //driveTime(0.3, 0.15);    //MOVE BACK FROM WALL (COULD GET RID OF THIS BECAUSE THE TURN WILL PUSH US OFF THE WALL
         //strafeDistance(1, 30, true);
         rotate(-90, 2); //TURN TOWARD WALL
@@ -70,10 +70,10 @@ public class NewTFMecanumAutoCrater extends MecanumLinearOpMode {
         rotate(0, 2); //TURN TOWARD WALL
         strafeDistance(1, 8,false);
         marker.setPosition(0.2);    //RETRACT MARKER DEPLOYMENT
-        driveDistance(0.75, 30);
+        driveDistance(0.75, 25);
         sleep(250);
         strafeDistance(1, 3, false);
-        driveDistance(0.5, 5);
+        driveDistance(0.4, 5);
         telemetry.addData("Status ", " auto done");
     }
 }

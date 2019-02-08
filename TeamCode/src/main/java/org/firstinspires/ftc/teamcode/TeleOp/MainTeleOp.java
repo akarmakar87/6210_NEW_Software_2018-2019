@@ -69,9 +69,9 @@ public class MainTeleOp extends MecanumLinearOpMode {
             }
 
             //DON'T NEED BECAUSE AUTO GETS IT OUT OF THE WAY AND DON'T NEED IT IN TELE-OP
-            if(gamepad2.a){
+            /*if(gamepad2.a){
                 setHook();
-            }
+            }*/
 
             //LOCK CONTROLS
             while(gamepad2.dpad_right){    //LOCK
