@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.SeasonMaterials.AutoLinearOpMode;
 import org.firstinspires.ftc.teamcode.SeasonMaterials.MecanumLinearOpMode;
 
-@Autonomous(name="PIDTestAsha", group="auto")
+@Autonomous(name="DrivePIDTestAsha", group="auto")
 
-public class PIDMethod_Asha extends MecanumLinearOpMode {
+public class TurnPIDMethod_Asha extends MecanumLinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {}

@@ -198,6 +198,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     public int getEncoderAvg(){
         //divided by three for now because RB encoder returns 0
         int avg = (Math.abs(LF.getCurrentPosition()) + Math.abs(RF.getCurrentPosition()) + Math.abs(LB.getCurrentPosition()) + Math.abs(RB.getCurrentPosition()))/3;
+        //MAKE SURE ALL ENCODERS WORK BEFORE DIVIDING BY 4 OR PUT IN A CONDITION TO DETERMINE IF AN ENCODER VALUE IS WEIRD, AND DIVIDE ACCORDINGLY
         return avg;
     }
 
