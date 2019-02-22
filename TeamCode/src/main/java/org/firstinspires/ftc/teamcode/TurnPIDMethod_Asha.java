@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.SeasonMaterials.AutoLinearOpMode;
 import org.firstinspires.ftc.teamcode.SeasonMaterials.MecanumLinearOpMode;
 
-@Autonomous(name="DrivePIDTestAsha", group="auto")
+@Autonomous(name="TurnPIDTestAsha", group="auto")
 
 public class TurnPIDMethod_Asha extends MecanumLinearOpMode {
 

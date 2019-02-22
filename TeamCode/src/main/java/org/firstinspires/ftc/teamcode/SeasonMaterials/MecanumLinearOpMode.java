@@ -45,7 +45,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     //gyro variables
     Orientation angles;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV Motor Encoder
+    static final double     COUNTS_PER_MOTOR_REV    = 2240 ;    // REV Motor Encoder (1120 for 20:1)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
 
@@ -266,6 +266,33 @@ public class MecanumLinearOpMode extends LinearOpMode{
         return angles.firstAngle;
     }
 
+    public void turnPID(double tAngle, double kP, double kI, double kD, double timeOut){
+        double power, prevError, error, dT, prevTime, currTime, P, I, D; //DECLARE ALL VARIABLES
+        prevError = error = tAngle - getYaw(); //INITIALIZE THESE VARIABLES
+        power = dT = prevTime = currTime = P = I = D = 0;
+        ElapsedTime time = new ElapsedTime(); //CREATE NEW TIME OBJECT
+        resetTime();
+        while (Math.abs(error) > 0.5 && currTime < timeOut){
+            prevError = error;
+            error = tAngle - getYaw(); //GET ANGLE REMAINING TO TURN (tANGLE MEANS TARGET ANGLE, AS IN THE ANGLE YOU WANNA GO TO)
+            prevTime = currTime;
+            currTime = time.milliseconds();
+            dT = currTime - prevTime; //GET DIFFERENCE IN CURRENT TIME FROM PREVIOUS TIME
+            P = error;
+            I = error * dT;
+            D = (error - prevError)/dT;
+            power = P * kP + I * kI + D * kD;
+            setMotorPowers(Range.clip(power, 0.2, 1), -Range.clip(power, 0.2, 1));
+
+            telemetry.addData("tAngle: ", tAngle)
+                    .addData("P:", P)
+                    .addData("I:", I)
+                    .addData("D:", D)
+                    .addData("power", power)
+                    .addData("error: ", error)
+                    .addData("currTime: ", currTime);
+        }
+    }
 
     //ROTATE USING GYRO
     public void rotate(double targetAngleChange, int timeout) {
