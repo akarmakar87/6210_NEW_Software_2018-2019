@@ -12,7 +12,7 @@ public class PIDConceptTest extends AutoLinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        double PV = 0;  //Process Variable: Where we are
+        double PV = 0;  //Process Variable: Where we start
         double SP = 50; //SetPoint: Where we want to be
         double Error = SP - PV; //Difference between SP and PV
         double OP = Error / 5; //OutPut: How much we change
@@ -26,9 +26,10 @@ public class PIDConceptTest extends AutoLinearOpMode {
             telemetry.update();
             if (PV < SP-0.1) {
                 if (OP > 1){
-                PV = PV + OP;}
+                    PV = PV + OP;
+                }
                 else { PV = PV + OP * 5;}
-                sleep(500);
+                    sleep(500);
 
             }
             if (PV > SP+0.1) {
@@ -47,7 +48,7 @@ public class PIDConceptTest extends AutoLinearOpMode {
             }
 
             Error = SP - PV;
-            OP = Error / 10;
+            OP = Error / 5;
         }
 
 }
