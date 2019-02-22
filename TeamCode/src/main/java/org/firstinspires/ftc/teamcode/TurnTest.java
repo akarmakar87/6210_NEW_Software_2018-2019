@@ -18,6 +18,6 @@ public class TurnTest extends MecanumLinearOpMode {
 
         waitForStart();
 
-        turnPID(90, 0.2, 0.5, 0.1, 5);
+        turnPID(90, 0.6/90, 0.5, 0.1, 5);
     }
 }
