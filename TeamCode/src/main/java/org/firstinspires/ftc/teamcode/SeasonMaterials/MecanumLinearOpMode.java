@@ -45,7 +45,7 @@ public class MecanumLinearOpMode extends LinearOpMode{
     //gyro variables
     Orientation angles;
 
-    static final double     COUNTS_PER_MOTOR_REV    = 2240 ;    // REV Motor Encoder (1120 for 20:1)
+    static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV Motor Encoder (1120 for 20:1)
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
 

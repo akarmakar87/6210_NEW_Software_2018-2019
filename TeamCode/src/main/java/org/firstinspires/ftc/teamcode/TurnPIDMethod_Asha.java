@@ -93,7 +93,7 @@ public class TurnPIDMethod_Asha extends MecanumLinearOpMode {
         }
     }
 
-    public void turnPID(double tAngle, double kP, double kD, double timeOut){
+    public void turnPD(double tAngle, double kP, double kD, double timeOut){
         double power, prevError, error, dT, prevTime, currTime, P, D; //DECLARE ALL VARIABLES
         prevError = error = tAngle - getYaw(); //INITIALIZE THESE VARIABLES
         power = dT = prevTime = currTime = P = D = 0;
